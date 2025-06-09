@@ -14,7 +14,7 @@ export const AppProvider = ({ children }) => {
   const [showSignInModal, setShowSignInModal] = useState(true);
   const [orderData, setOrderData] = useState([]);
 
-  const backendUrl = process.env.BACKEND_URL;
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
