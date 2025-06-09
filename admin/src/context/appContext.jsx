@@ -1,4 +1,9 @@
 import axios from "axios";
+import dotenv from "dotenv";
+dotenv.config();
+
+
+
 import { createContext, useState, useEffect } from "react";
 
 export const appContext = createContext();
@@ -9,7 +14,7 @@ export const AppProvider = ({ children }) => {
   const [showSignInModal, setShowSignInModal] = useState(true);
   const [orderData, setOrderData] = useState([]);
 
-  const backendUrl = "http://localhost:4000";
+  const backendUrl = process.env.BACKEND_URL;
 
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
