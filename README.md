@@ -1,26 +1,51 @@
 # 🍔 MERN Food Delivery App
 
-A full-stack **Food Delivery Web Application** built using the **MERN stack (MongoDB, Express.js, React, Node.js)**.  
-The frontend was **personally designed** to provide a smooth and intuitive user experience. This project demonstrates real-world architecture with features like user authentication, cart management, order processing, and more.
+A full-stack Food Delivery Web Application built using the MERN stack (MongoDB, Express.js, React, Node.js) with a powerful Admin Panel for managing food items and orders.
+The frontend was personally designed to offer a smooth and intuitive user experience. This project features admin and user authentication, cart management, order processing, and real-world backend architecture.
 
-> 🧠 This app was built to practice full-stack development, performance optimization with Redis, and clean component-based UI design.
+🧠 Built to master full-stack development, implement Redis for performance optimization, and apply clean, component-based UI design.
 
 ---
 
 ## 🔗 Live Demo (Optional)
 
-👉 [https://food-delivery-roan-one.vercel.app/](https://food-delivery-roan-one.vercel.app/)
+- 👉 User panel [https://food-delivery-roan-one.vercel.app/](https://food-delivery-five-kohl.vercel.app/)
+- 👉 Admin panel [https://food-delivery-roan-one.vercel.app/](https://food-delivery-admin-indol.vercel.app/)
 
 ---
 
 ## 🚀 Features
 
+👤 User Panel
+
+
 - 📦 Browse food items and categories
+
 - 🛒 Add items to cart and checkout
+
 - 🔐 User authentication (login/register)
-- 💾 RESTful API backend with MongoDB
-- ⚡ Redis integrated for caching and performance
-- 💡 Clean, mobile-responsive custom UI
+
+- 📋 View orders and order history
+
+🛠️ Admin Panel
+
+- 🧾 Admin authentication
+
+- 📥 Add, update, delete food items
+
+- 📊 View and manage orders
+
+- 👥 Manage user data
+
+Backend Capabilities
+
+- 💾 RESTful API with MongoDB
+
+- ⚡ Redis integration for caching and performance
+
+- 🛡️ JWT-based secure authentication
+
+- 📂 File upload support (e.g., food images)
 
 ---
 
@@ -55,49 +80,56 @@ cd mern-food-delivery
 ## 🖥️ Start the Frontend
 ```
 # Navigate to frontend directory
-cd frontend
+cd client
 
 # Install dependencies
 npm install
 
 # Start the React development server
-npm start
+npm run dev
 ```
 
 ## 🛠️ Start the Backend
 ```
 # Navigate to backend directory
-cd backend
+cd server
 
 # Install dependencies
 npm install
 
 # Start the Express server
+npm start
+```
+
+## 🖥️ Start the Admin
+```
+# Navigate to frontend directory
+cd admin
+
+# Install dependencies
+npm install
+
+# Start the React development server
 npm run dev
 ```
 ## ⚙️ Set up Environment Variables
 
 ```
+
+# Server
 PORT=5000
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
-
-# Razorpay credentials
 RAZORPAY_KEY_ID=your_razorpay_key_id
 RAZORPAY_KEY_SECRET=your_razorpay_key_secret
 
 
-# Frontend
-REACT_APP_API_BASE_URL=http://localhost:5000/api
+# Client & Admin
+VITE_RAZORPAY_KEY_ID = key
+VITE_BACKEND_URL = http://localhost:4000 (or your deployed link)
 ```
 
-## 📌 Future Improvements
 
-- 🧾 Admin dashboard for managing items/orders
-
-- 📱 PWA support for mobile users
-
-- 📊 Order tracking and delivery status
 
 ## 🙋‍♂️ Author
 Made with ❤️ by Divil Thakur
