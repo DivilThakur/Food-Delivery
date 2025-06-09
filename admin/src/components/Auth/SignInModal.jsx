@@ -7,16 +7,16 @@ const SignInModal = ({ onClose }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { setToken } = useContext(appContext);
+  const { setToken, backendUrl } = useContext(appContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        "http://localhost:4000/api/admin/login",
-        { email, password }
-      );
+      const response = await axios.post(`${backendUrl}/api/admin/login`, {
+        email,
+        password,
+      });
 
       if (response.data.success) {
         localStorage.setItem("token", response.data.token);
