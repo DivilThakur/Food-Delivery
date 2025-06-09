@@ -1,8 +1,4 @@
 import axios from "axios";
-import dotenv from "dotenv";
-dotenv.config();
-
-
 
 import { createContext, useState, useEffect } from "react";
 
