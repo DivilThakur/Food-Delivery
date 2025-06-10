@@ -5,14 +5,26 @@ The frontend was personally designed to offer a smooth and intuitive user experi
 
 🧠 Built to master full-stack development, implement Redis for performance optimization, and apply clean, component-based UI design.
 
----
+
 
 ## 🔗 Live Demo (Optional)
 
 - 👉 User panel [https://food-delivery-roan-one.vercel.app/](https://food-delivery-five-kohl.vercel.app/)
 - 👉 Admin panel [https://food-delivery-roan-one.vercel.app/](https://food-delivery-admin-indol.vercel.app/)
 
----
+
+
+## 🔐 Admin Access
+To register a new admin, use the following API endpoint via Postman:
+POST → https://food-delivery-j63v.onrender.com/api/admin/register
+Include the following in the request body:
+name
+email
+password
+
+## ✅ Demo Admin Credentials:
+  - Email: admin@mail.com
+   - Password: 12345678
 
 ## 🚀 Features
 
@@ -76,6 +88,8 @@ Backend Capabilities
 git clone https://github.com/divilthakur/mern-food-delivery.git
 cd mern-food-delivery
 ```
+
+
 
 ## 🖥️ Start the Frontend
 ```
