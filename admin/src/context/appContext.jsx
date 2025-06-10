@@ -31,6 +31,12 @@ export const AppProvider = ({ children }) => {
     setShowSignInModal(false);
   };
 
+  useEffect(() => {
+    if (token) {
+      fetchOrderData();
+    }
+  }, [token]);
+
   const fetchOrderData = async () => {
     try {
       const response = await axios.get(backendUrl + "/api/admin/getOrders");
