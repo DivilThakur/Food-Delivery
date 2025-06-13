@@ -16,16 +16,7 @@ const upload = multer({
   dest: "temp_uploads",
 });
 
-foodRoute.use((err, req, res, next) => {
-  if (err instanceof multer.MulterError && err.code === "LIMIT_FILE_SIZE") {
-    return res
-      .status(400)
-      .json({ error: "File too large. Max size allowed is 2MB." });
-  } else if (err) {
-    return res.status(400).json({ error: err.message });
-  }
-  next();
-});
+
 
 foodRoute.post("/add-food", upload.single("image"), async (req, res) => {
   try {
