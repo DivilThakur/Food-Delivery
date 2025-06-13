@@ -9,10 +9,16 @@ const Foods = () => {
   const { addToCart, addingStates, food_list, backendUrl } =
     useContext(AppContext);
 
+  const { displayFood, categorise, category } = useContext(AppContext);
+
+  const [currPage, setCurrPage] = useState(1);
+  const [rowsPerPage] = useState(9);
+
   const handleNextCLick = () => {
     setCurrPage((prev) => Math.min(prev + 1, totalPages));
     scrollToFootItems();
   };
+
   const handlePrevClick = () => {
     setCurrPage((prev) => Math.max(prev - 1, 1));
     scrollToFootItems();
@@ -27,14 +33,10 @@ const Foods = () => {
     }
   };
 
-  const { displayFood, categorise, category } = useContext(AppContext);
-
-  const [currPage, setCurrPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(9);
   const indexOfLastItem = currPage * rowsPerPage;
   const indexOfFirstItem = indexOfLastItem - rowsPerPage;
-  const currItem = displayFood.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(displayFood.length / 9);
+  const currItem = displayFood && displayFood.length > 0 ? displayFood.slice(indexOfFirstItem, indexOfLastItem) : [];
+  const totalPages = displayFood ? Math.ceil(displayFood.length / rowsPerPage) : 0;
 
   return (
     <div className="min-h-screen flex flex-col-reverse lg:flex-row my-32">

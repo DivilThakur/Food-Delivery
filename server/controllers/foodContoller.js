@@ -37,9 +37,10 @@ export const getFood = async (req, res) => {
     res.status(200).json({ success: true, foods });
   } catch (error) {
     console.log("error in get food (food controller)", error);
-    res.status(200).json({ success: true, message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
+
 
 export const deleteFood = async (req, res) => {
   try {

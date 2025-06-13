@@ -9,7 +9,8 @@ const AppContextProvider = (props) => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [category, setCategory] = useState("All");
   const [food_list, setFood_List] = useState([]);
-  const [displayFood, setDisplayFood] = useState(food_list);
+  const [displayFood, setDisplayFood] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [cartItems, setCartItems] = useState([]);
   const [addingStates, setAddingStates] = useState({});
   const [cartOpen, setCartOpen] = useState(false);
@@ -26,11 +27,14 @@ const AppContextProvider = (props) => {
 
   const loadFoods = async () => {
     try {
+      setIsLoading(true);
       const { data } = await axios.get(backendUrl + "/api/food/get-food");
       setFood_List(data.foods);
       setDisplayFood(data.foods);
     } catch (error) {
       console.log("error in fetching food list ", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -167,6 +171,7 @@ const AppContextProvider = (props) => {
     logout,
     food_list,
     clearCart,
+    isLoading,
   };
 
   return (

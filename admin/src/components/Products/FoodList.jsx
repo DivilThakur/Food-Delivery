@@ -9,16 +9,40 @@ const FoodList = () => {
   const { backendUrl } = useContext(appContext);
   const [foodList, setFoodList] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchFoods = async () => {
-      const response = await axios.get(backendUrl + "/api/food/get-food");
-      setFoodList(response.data.foods);
-      console.log(foodList);
+      if (!backendUrl) {
+        console.error("Backend URL is not configured");
+        toast.error("Backend URL is not configured. Please check your environment variables.");
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        setIsLoading(true);
+        console.log("Fetching foods from:", backendUrl + "/api/food/get-food");
+        const response = await axios.get(backendUrl + "/api/food/get-food");
+        console.log("Server response:", response.data);
+        
+        if (response.data.success) {
+          console.log("Setting food list:", response.data.foods);
+          setFoodList(response.data.foods || []);
+        } else {
+          console.error("Server returned unsuccessful response:", response.data);
+          toast.error("Failed to fetch foods: " + (response.data.message || "Unknown error"));
+        }
+      } catch (error) {
+        console.error("Error fetching foods:", error);
+        toast.error("Failed to fetch foods: " + (error.message || "Unknown error"));
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     fetchFoods();
-  }, []);
+  }, [backendUrl]);
 
   const categories = [
     { value: "all", label: "All Foods" },
