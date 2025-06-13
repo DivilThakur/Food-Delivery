@@ -94,23 +94,24 @@ const Orders = () => {
                     className="flex w-10 md:w-24"
                   />
                   <div className="col-span-3 lg:col-span-2 font-Outfit font-normal text-[12px] md:text-[16px]">
-                    {order.items.map((item, i) => {
-                      if (i === order.items.length - 1) {
-                        return item.name + " x " + item.quantity;
+                    {order?.items?.map((item, i) => {
+                      if (!item) return '';
+                      if (i === (order.items.length - 1)) {
+                        return `${item?.name || 'Unknown'} x ${item?.quantity || 0}`;
                       } else {
-                        return " " + item.name + " x " + item.quantity + ", ";
+                        return ` ${item?.name || 'Unknown'} x ${item?.quantity || 0}, `;
                       }
                     })}
                   </div>
                   <p className="font-Outfit font-medium text-[12px] md:text-[16px] text-center p-1">
-                    ${order.amount.toFixed(2)}
+                    ${(order?.amount || 0).toFixed(2)}
                   </p>
                   <p className="font-Outfit font-medium text-[12px] md:text-[16px] text-center p-1">
-                    Items: {order.items.length}
+                    Items: {order?.items?.length || 0}
                   </p>
                   <div className="font-Outfit font-medium text-[12px] md:text-[16px] text-center">
-                    <span className={`px-3 py-1 rounded-full border ${getStatusStyle(order.status)}`}>
-                      {order.status}
+                    <span className={`px-3 py-1 rounded-full border ${getStatusStyle(order?.status || '')}`}>
+                      {order?.status || 'Unknown'}
                     </span>
                   </div>
                 </div>

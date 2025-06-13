@@ -30,45 +30,47 @@ const Products = () => {
       ) : food_list && food_list.length > 0 ? (
         <div className="grid grid-cols-2 z-10 sm:grid-cols-3 lg:grid-cols-4 p-10 gap-10 xl:mx-40 sm:mt-5 lg:mt-14">
           {food_list.slice(0, 8).map((item) => (
-            <motion.div
-              key={item._id}
-              className="bg-[#fef7f1] rounded-lg overflow-hidden z-10 group"
-              initial={{ opacity: 0, y: 80 }}
-              whileHover={{
-                boxShadow: "4px 4px 10px rgba(242 ,156 ,82,0.3)",
-                scale: 1.05,
-              }}
-              transition={{ duration: 0.4 }}
-              whileInView={{ opacity: 1, scale: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-            >
-              <img
-                src={item.image}
-                alt=""
-                className=""
-                width={360}
-                height={280}
-              />
-              <div className="flex flex-col justify-center items-center my-5">
-                <h1 className="text-[#492d13] font-Outfit font-semibold sm:text-xl  text-center">
-                  {item.name}
-                </h1>
-                <div className="flex justify-around w-full items-center my-3 group-hover:opacity-0 group-hover:scale-0 transition-all duration-200">
-                  <h1 className="text-[#f29c52] text-xs sm:text-[16px] font-Outfit font-medium">
-                    ${item.discount.toFixed(2)} USD
+            item && (
+              <motion.div
+                key={item._id}
+                className="bg-[#fef7f1] rounded-lg overflow-hidden z-10 group"
+                initial={{ opacity: 0, y: 80 }}
+                whileHover={{
+                  boxShadow: "4px 4px 10px rgba(242 ,156 ,82,0.3)",
+                  scale: 1.05,
+                }}
+                transition={{ duration: 0.4 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.4 }}
+              >
+                <img
+                  src={item?.image || ''}
+                  alt={item?.name || 'Product'}
+                  className=""
+                  width={360}
+                  height={280}
+                />
+                <div className="flex flex-col justify-center items-center my-5">
+                  <h1 className="text-[#492d13] font-Outfit font-semibold sm:text-xl text-center">
+                    {item?.name || 'Product Name'}
                   </h1>
-                  <h1 className="text-neutral-400 text-xs sm:text-[16px] font-Outfit font-normal line-through">
-                    ${item.price.toFixed(2)} USD
-                  </h1>
+                  <div className="flex justify-around w-full items-center my-3 group-hover:opacity-0 group-hover:scale-0 transition-all duration-200">
+                    <h1 className="text-[#f29c52] text-xs sm:text-[16px] font-Outfit font-medium">
+                      ${(item?.discount || 0).toFixed(2)} USD
+                    </h1>
+                    <h1 className="text-neutral-400 text-xs sm:text-[16px] font-Outfit font-normal line-through">
+                      ${(item?.price || 0).toFixed(2)} USD
+                    </h1>
+                  </div>
+                  <motion.button
+                    className="px-1 py-1 text-xs sm:px-4 sm:text-lg sm:py-2 absolute opacity-0 scale-0 group-hover:scale-105 group-hover:opacity-100 bottom-4 sm:bottom-8 border rounded-full bg-[#f29c52] md:text-[16px] text-white font-Outfit sm:font-medium hover:bg-[#492d13] transition-all duration-300"
+                    onClick={() => item?._id && addToCart(item)}
+                  >
+                    {item?._id && addingStates[item._id] ? "Adding.." : "Add to cart"}
+                  </motion.button>
                 </div>
-                <motion.button
-                  className="px-1 py-1 text-xs sm:px-4 sm:text-lg sm:py-2 absolute opacity-0 scale-0 group-hover:scale-105 group-hover:opacity-100 bottom-4 sm:bottom-8 border rounded-full bg-[#f29c52] md:text-[16px] text-white font-Outfit sm:font-medium hover:bg-[#492d13] transition-all duration-300"
-                  onClick={() => addToCart(item)}
-                >
-                  {addingStates[item._id] ? "Adding.." : "Add to cart"}
-                </motion.button>
-              </div>
-            </motion.div>
+              </motion.div>
+            )
           ))}
         </div>
       ) : (

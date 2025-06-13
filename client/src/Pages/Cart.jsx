@@ -94,50 +94,41 @@ const Cart = () => {
           />
         </div>
         <div className="flex flex-col flex-grow overflow-y-scroll hideScroll ">
-          {cartItems.length === 0 ? (
-            <div className="flex justify-center items-center  h-full">
-              <p className="text-3xl text-[#] font-Outfit font-bold ">
-                Cart Is Empty{" "}
-              </p>
-            </div>
-          ) : (
-            cartItems.map((item, i) => (
-              <div key={i} className="flex justify-between p-4  ">
-                <div className="flex ">
-                  <img
-                    src={item.productId.image}
-                    alt=""
-                    className="w-24  sm:w-32 "
-                  />
-                  <div className="p-2 flex flex-col items-start space-y-1 md:space-y-2 justify-center ">
-                    <p className=" text-lg leading-5 md:text-xl font-Outfit font-medium">
-                      {item.productId.name}
-                    </p>
-                    <p className=" text-xs sm:text-[16px] font-Outfit font-normal text-zinc-500">
-                      ${item.productId.discount} USD
-                    </p>
-                    <p
-                      className=" text-xs sm:text-[16px] font-Outfit font-normal text-[#ff4c0a] hover:text-[#f29c52] cursor-pointer "
+          <div className="flex flex-col gap-5">
+            {cartItems && cartItems.length > 0 ? (
+              cartItems.map((item) => (
+                item && item.productId && (
+                  <div
+                    key={item._id}
+                    className="flex items-center justify-between border-b border-gray-200 pb-4"
+                  >
+                    <div className="flex items-center gap-4">
+                      <img
+                        src={item.productId.image}
+                        alt={item.productId.name}
+                        className="w-20 h-20 object-cover rounded-lg"
+                      />
+                      <div>
+                        <h3 className="text-lg font-semibold">{item.productId.name}</h3>
+                        <p className="text-gray-600">Quantity: {item.quantity}</p>
+                        <p className="text-green-600 font-semibold">
+                          ${item.productId.discount}
+                        </p>
+                      </div>
+                    </div>
+                    <button
                       onClick={() => removeFromCart(item)}
+                      className="text-red-500 hover:text-red-700"
                     >
                       Remove
-                    </p>
+                    </button>
                   </div>
-                </div>
-                <div className="flex justify-center items-center gap-3 p-2">
-                  <Minus
-                    className="border p-1 cursor-pointer"
-                    onClick={() => DecreaseItem(item)}
-                  />
-                  <p className=" text-sm sm:text-xl">{item.quantity}</p>
-                  <Plus
-                    className="border p-1 cursor-pointer"
-                    onClick={() => IncreaseItem(item)}
-                  />
-                </div>
-              </div>
-            ))
-          )}
+                )
+              ))
+            ) : (
+              <p className="text-center text-gray-500">Your cart is empty</p>
+            )}
+          </div>
         </div>
         <div className="border-t  flex flex-col p-2 space-y-2 ">
           <div className="flex justify-between items-center p-2 px-2">

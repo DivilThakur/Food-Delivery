@@ -38,11 +38,11 @@ const Checkout = () => {
     e.preventDefault();
     setLoading(true);
 
-    const simplifiedItems = cartItems.map((item) => ({
-      name: item.productId.name,
-      price: item.productId.discount,
-      quantity: item.quantity,
-    }));
+    const simplifiedItems = cartItems?.map((item) => ({
+      name: item?.productId?.name || 'Unknown Product',
+      price: item?.productId?.discount || 0,
+      quantity: item?.quantity || 0,
+    })) || [];
 
     console.log(formData);
 

@@ -89,39 +89,41 @@ const FeaturedProducts = () => {
         ) : food_list && food_list.length > 0 ? (
           <div className="featured-products-slider">
             <Slider {...settings} ref={sliderRef}>
-              {food_list.slice(5, 15).map((item, i) => (
-                <div key={i} className="px-2">
-                  <div className="bg-[#fef7f1] rounded-lg overflow-hidden group z-10 h-full flex flex-col">
-                    <div className="relative w-full aspect-square">
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        width={360}
-                        height={280}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div className="flex flex-col justify-between flex-grow p-4">
-                      <h1 className="text-[#492d13] font-Outfit font-semibold text-base sm:text-lg text-center mb-2">
-                        {item.name}
-                      </h1>
-                      <div className="flex justify-around w-full items-center mb-4 group-hover:opacity-0 group-hover:scale-0 transition-all duration-200">
-                        <h1 className="text-[#f29c52] text-sm sm:text-base font-Outfit font-medium">
-                          ${item.discount.toFixed(2)} USD
-                        </h1>
-                        <h1 className="text-neutral-400 text-sm sm:text-base font-Outfit font-normal line-through">
-                          ${item.price.toFixed(2)} USD
-                        </h1>
+              {food_list && food_list.length > 0 && food_list.slice(5, 15).map((item, i) => (
+                item && (
+                  <div key={i} className="px-2">
+                    <div className="bg-[#fef7f1] rounded-lg overflow-hidden group z-10 h-full flex flex-col">
+                      <div className="relative w-full aspect-square">
+                        <img
+                          src={item?.image || ''}
+                          alt={item?.name || 'Product'}
+                          width={360}
+                          height={280}
+                          className="w-full h-full object-cover"
+                        />
                       </div>
-                      <button
-                        className="w-full px-4 py-2 opacity-0 scale-0 group-hover:scale-100 group-hover:opacity-100 border rounded-full bg-[#f29c52] text-sm sm:text-base text-white font-Outfit font-medium hover:bg-[#492d13] transition-all duration-300"
-                        onClick={() => addToCart(item)}
-                      >
-                        {addingStates[item._id] ? "Adding.." : "Add to cart"}
-                      </button>
+                      <div className="flex flex-col justify-between flex-grow p-4">
+                        <h1 className="text-[#492d13] font-Outfit font-semibold text-base sm:text-lg text-center mb-2">
+                          {item?.name || 'Product Name'}
+                        </h1>
+                        <div className="flex justify-around w-full items-center mb-4 group-hover:opacity-0 group-hover:scale-0 transition-all duration-200">
+                          <h1 className="text-[#f29c52] text-sm sm:text-base font-Outfit font-medium">
+                            ${(item?.discount || 0).toFixed(2)} USD
+                          </h1>
+                          <h1 className="text-neutral-400 text-sm sm:text-base font-Outfit font-normal line-through">
+                            ${(item?.price || 0).toFixed(2)} USD
+                          </h1>
+                        </div>
+                        <button
+                          className="w-full px-4 py-2 opacity-0 scale-0 group-hover:scale-100 group-hover:opacity-100 border rounded-full bg-[#f29c52] text-sm sm:text-base text-white font-Outfit font-medium hover:bg-[#492d13] transition-all duration-300"
+                          onClick={() => item?._id && addToCart(item)}
+                        >
+                          {item?._id && addingStates[item._id] ? "Adding.." : "Add to cart"}
+                        </button>
+                      </div>
                     </div>
                   </div>
-                </div>
+                )
               ))}
             </Slider>
           </div>
