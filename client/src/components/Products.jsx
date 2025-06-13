@@ -43,13 +43,13 @@ const Products = () => {
                 whileInView={{ opacity: 1, scale: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.4 }}
               >
-                <img
-                  src={item?.image || ''}
-                  alt={item?.name || 'Product'}
-                  className=""
-                  width={360}
-                  height={280}
-                />
+                <div className="relative w-full aspect-square">
+                  <img
+                    src={item?.image || ''}
+                    alt={item?.name || 'Product'}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
                 <div className="flex flex-col justify-center items-center my-5">
                   <h1 className="text-[#492d13] font-Outfit font-semibold sm:text-xl text-center">
                     {item?.name || 'Product Name'}

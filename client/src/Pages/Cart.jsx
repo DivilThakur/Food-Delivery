@@ -100,7 +100,7 @@ const Cart = () => {
                 item && item.productId && (
                   <div
                     key={item._id}
-                    className="flex items-center justify-between border-b border-gray-200 pb-4"
+                    className="flex items-center justify-between p-4 border-b border-gray-200"
                   >
                     <div className="flex items-center gap-4">
                       <img
@@ -108,19 +108,33 @@ const Cart = () => {
                         alt={item.productId.name}
                         className="w-20 h-20 object-cover rounded-lg"
                       />
-                      <div>
-                        <h3 className="text-lg font-semibold">{item.productId.name}</h3>
-                        <p className="text-gray-600">Quantity: {item.quantity}</p>
-                        <p className="text-green-600 font-semibold">
+                      <div className="space-y-1">
+                        <h3 className="text-lg font-semibold text-[#492d13]">{item.productId.name}</h3>
+                        <p className="text-[#f29c52] font-semibold">
                           ${item.productId.discount}
                         </p>
+                        <div className="flex items-center gap-3">
+                          <button
+                            onClick={() => DecreaseItem(item)}
+                            className="w-8 h-8 flex items-center justify-center rounded-full border border-[#f29c52] text-[#f29c52] hover:bg-[#f29c52] hover:text-white transition-all duration-200"
+                          >
+                            <Minus size={16} />
+                          </button>
+                          <span className="text-gray-600 font-medium">{item.quantity}</span>
+                          <button
+                            onClick={() => IncreaseItem(item)}
+                            className="w-8 h-8 flex items-center justify-center rounded-full border border-[#f29c52] text-[#f29c52] hover:bg-[#f29c52] hover:text-white transition-all duration-200"
+                          >
+                            <Plus size={16} />
+                          </button>
+                        </div>
                       </div>
                     </div>
                     <button
                       onClick={() => removeFromCart(item)}
-                      className="text-red-500 hover:text-red-700"
+                      className="text-red-500 hover:text-red-700 p-2 hover:bg-red-50 rounded-full transition-all duration-200"
                     >
-                      Remove
+                      <Trash2 size={20} />
                     </button>
                   </div>
                 )

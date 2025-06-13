@@ -25,6 +25,10 @@ const AppContextProvider = (props) => {
     loadFoods();
   }, []);
 
+  useEffect(() => {
+    console.log("cartItems", cartItems);
+  });
+
   const loadFoods = async () => {
     try {
       setIsLoading(true);
@@ -60,14 +64,18 @@ const AppContextProvider = (props) => {
   };
 
   const getTotalQuantity = () => {
-    return cartItems?.reduce((total, item) => total + (item?.quantity || 0), 0) || 0;
+    return (
+      cartItems?.reduce((total, item) => total + (item?.quantity || 0), 0) || 0
+    );
   };
 
   const getTotalAmount = () => {
-    return cartItems?.reduce((total, item) => {
-      if (!item || !item.productId) return total;
-      return total + ((item.quantity || 0) * (item.productId.discount || 0));
-    }, 0) || 0;
+    return (
+      cartItems?.reduce((total, item) => {
+        if (!item || !item.productId) return total;
+        return total + (item.quantity || 0) * (item.productId.discount || 0);
+      }, 0) || 0
+    );
   };
 
   const logout = () => {
