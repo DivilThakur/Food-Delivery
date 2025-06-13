@@ -105,7 +105,7 @@ const Cart = () => {
               <div key={i} className="flex justify-between p-4  ">
                 <div className="flex ">
                   <img
-                    src={backendUrl + "/images/" + item.productId.image}
+                    src={item.productId.image}
                     alt=""
                     className="w-24  sm:w-32 "
                   />

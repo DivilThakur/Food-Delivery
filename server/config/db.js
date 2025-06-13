@@ -3,11 +3,7 @@ import mongoose from "mongoose";
 const connectDb = async () => {
   try {
     const conn = await mongoose.connect(
-      `${process.env.MONGO_URL}/foodDelivery`,
-      {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      }
+      `${process.env.MONGO_URL}/foodDelivery`
     );
 
     console.log(`✅ Database Connected: ${conn.connection.host}`);

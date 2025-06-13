@@ -22,10 +22,8 @@ const FeaturedProducts = () => {
     prevArrow: null,
     dots: true,
     dotsClass: "slick-dots",
-    customPaging: function(i) {
-      return (
-        <div className="w-2 h-2 bg-[#f29c52] rounded-full mt-4"></div>
-      );
+    customPaging: function (i) {
+      return <div className="w-2 h-2 bg-[#f29c52] rounded-full mt-4"></div>;
     },
     responsive: [
       {
@@ -96,8 +94,10 @@ const FeaturedProducts = () => {
                   <div className="bg-[#fef7f1] rounded-lg overflow-hidden group z-10 h-full flex flex-col">
                     <div className="relative w-full aspect-square">
                       <img
-                        src={backendUrl + "/images/" + item.image}
+                        src={item.image}
                         alt={item.name}
+                        width={360}
+                        height={280}
                         className="w-full h-full object-cover"
                       />
                     </div>

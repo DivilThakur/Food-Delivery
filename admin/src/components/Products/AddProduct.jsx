@@ -5,6 +5,7 @@ import { appContext } from "../../context/appContext";
 
 const AddProduct = () => {
   const { backendUrl } = useContext(appContext);
+  const [loading, setLoading] = useState(false);
 
   const [product, setProduct] = useState({
     name: "",
@@ -44,7 +45,7 @@ const AddProduct = () => {
         ...prev,
         image: file,
       }));
-      // Create preview URL
+
       const fileReader = new FileReader();
       fileReader.onloadend = () => {
         setPreviewUrl(fileReader.result);
@@ -55,6 +56,7 @@ const AddProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const formData = new FormData();
     formData.append("name", product.name);
@@ -90,6 +92,8 @@ const AddProduct = () => {
     } catch (error) {
       console.error("Error adding food:", error);
       alert("An error occurred while adding food.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -104,6 +108,7 @@ const AddProduct = () => {
           </label>
           <input
             type="text"
+            accept="image/*"
             name="name"
             value={product.name}
             onChange={handleChange}
@@ -147,7 +152,7 @@ const AddProduct = () => {
                 required
               />
               <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                PNG, JPG, GIF up to 10MB
+                PNG, JPG, JPEG up to 10MB
               </p>
             </div>
           </div>
@@ -218,9 +223,14 @@ const AddProduct = () => {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+          disabled={loading}
+          className={`w-full py-2 px-4 rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+            loading
+              ? "bg-blue-300 cursor-not-allowed"
+              : "bg-blue-600 hover:bg-blue-700 text-white"
+          }`}
         >
-          Add Food Item
+          {loading ? "Adding..." : "Add Food Item"}
         </button>
       </form>
     </div>

@@ -7,16 +7,24 @@ import foodRoute from "./routes/foodRoute.js";
 import cartRoute from "./routes/cartRoute.js";
 import orderRoute from "./routes/orderRoute.js";
 import adminRoute from "./routes/adminRoute.js";
+import limiter from "./config/rateLimiter.js";
+import redisClient from "./config/redisClient.js";
 configDotenv();
 
 const PORT = process.env.PORT || 4000;
 const app = express();
 
 connectDb();
+
 app.use(cors());
 app.use(express.json());
+app.set("trust proxy", 1);
+app.use(limiter);
 
-app.use("/images", express.static("uploads"));
+app.get("/ping", (req, res) => {
+  res.status(200).send("pong");
+});
+
 app.use("/api/user", userRouter);
 app.use("/api/food", foodRoute);
 app.use("/api/order", orderRoute);

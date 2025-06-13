@@ -126,7 +126,7 @@ const FoodList = () => {
           >
             <div className="relative h-48">
               <img
-                src={`${backendUrl}/images/${food.image}`}
+                src={food.image}
                 alt={food.name}
                 className="w-full h-full object-cover"
               />

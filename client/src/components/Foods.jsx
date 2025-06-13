@@ -35,8 +35,13 @@ const Foods = () => {
 
   const indexOfLastItem = currPage * rowsPerPage;
   const indexOfFirstItem = indexOfLastItem - rowsPerPage;
-  const currItem = displayFood && displayFood.length > 0 ? displayFood.slice(indexOfFirstItem, indexOfLastItem) : [];
-  const totalPages = displayFood ? Math.ceil(displayFood.length / rowsPerPage) : 0;
+  const currItem =
+    displayFood && displayFood.length > 0
+      ? displayFood.slice(indexOfFirstItem, indexOfLastItem)
+      : [];
+  const totalPages = displayFood
+    ? Math.ceil(displayFood.length / rowsPerPage)
+    : 0;
 
   return (
     <div className="min-h-screen flex flex-col-reverse lg:flex-row my-32">
@@ -69,6 +74,7 @@ const Foods = () => {
           </select>
         </div>
 
+        {/* category  */}
         <div className=" mx-auto space-y-10  w-full">
           <h1 className="text-2xl font-Outfit font-bold text-center ">
             Pick Category
@@ -166,6 +172,8 @@ const Foods = () => {
             </h1>
           </div>
         </div>
+
+        {/* show foods  */}
       </motion.div>
       <div className="" id="foot-items" ref={footItemsRef}>
         <div className="flex-1 grid grid-cols-2 md:grid-cols-3 p-4 xl:p-10 gap-10 xl:mx-20">
@@ -180,15 +188,17 @@ const Foods = () => {
               viewport={{ once: true, amount: 0.4 }}
             >
               <img
-                src={backendUrl + "/images/" + item.image}
+                src={item.image}
                 alt=""
                 className=""
+                width={360}
+                height={280}
               />
               <div className="flex flex-col justify-center items-center my-5">
                 <h1 className="text-[#492d13] font-Outfit font-semibold text-sm sm:text-xl text-center">
                   {item.name}
                 </h1>
-                <div className="flex justify-around w-full group-hover:opacity-0 group-hover:scale-0 transition-all duration-500 items-center my-3">
+                <div className="flex justify-around w-full group-hover:opacity-0 group-hover:scale-0 transition-all duration-500 items-center mt-5">
                   <h1 className="text-[#f29c52] text-xs sm:text-[16px] font-Outfit font-medium">
                     ${item.discount.toFixed(2)} USD
                   </h1>
@@ -197,7 +207,7 @@ const Foods = () => {
                   </h1>
                 </div>
                 <button
-                  className="px-2 py-2 sm:px-4 absolute bottom-4 sm:py-2 opacity-0  group-hover:opacity-100 group-hover:scale-105 border rounded-full bg-[#f29c52] md:text-[16px] text-white font-Outfit sm:font-medium
+                  className="px-1 py-1 text-xs sm:px-4 sm:text-lg absolute bottom-4 sm:bottom-7 sm:py-2 opacity-0  group-hover:opacity-100 group-hover:scale-105 border rounded-full bg-[#f29c52] md:text-[16px] text-white font-Outfit sm:font-medium
                                     hover:bg-[#492d13] transition-all duration-200 border-[#fff5ed] delay-[50ms] "
                   onClick={() => addToCart(item)}
                 >
