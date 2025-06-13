@@ -6,20 +6,30 @@ import Menu from './Pages/Menu'
 import Contact from './Pages/Contact'
 import MobileCart from "./Pages/Cart"
 import { Routes, Route } from "react-router-dom"
-import { useContext } from "react"
+import { useContext, useState, useEffect } from "react"
 import { AppContext } from "./context/AppContext"
 import { Toaster } from "react-hot-toast"
 import Login from "./Pages/Login"
 import Checkout from "./Pages/Checkout"
 import MobileMenu from "./Pages/MobileMenu"
 import Orders from "./Pages/Orders"
+import LoadingScreen from "./components/LoadingScreen"
 
 const App = () => {
-
   const { cartOpen, showLogin, showMobileMenu } = useContext(AppContext);
+  const [showLoading, setShowLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLoading(false);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="overflow-clip">
+      {showLoading && <LoadingScreen />}
       <Toaster />
       <Navbar />
       {
@@ -42,7 +52,6 @@ const App = () => {
       </Routes>
       <Footer />
     </div>
-
   )
 }
 
