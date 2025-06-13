@@ -20,6 +20,13 @@ const FeaturedProducts = () => {
     initialSlide: 0,
     nextArrow: null,
     prevArrow: null,
+    dots: true,
+    dotsClass: "slick-dots",
+    customPaging: function(i) {
+      return (
+        <div className="w-2 h-2 bg-[#f29c52] rounded-full mt-4"></div>
+      );
+    },
     responsive: [
       {
         breakpoint: 1024,
@@ -30,7 +37,7 @@ const FeaturedProducts = () => {
         },
       },
       {
-        breakpoint: 600,
+        breakpoint: 768,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
@@ -56,7 +63,7 @@ const FeaturedProducts = () => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative my-20">
       <div className="flex justify-between items-center lg:mx-20 px-5">
         <h1 className="text-2xl sm:text-3xl lg:text-4xl font-Outfit font-bold text-[#492d13]">
           Featured Products
@@ -76,53 +83,53 @@ const FeaturedProducts = () => {
           </button>
         </div>
       </div>
-      <div className="lg:mx-20 lg:mt-20 px-5 ">
-        <div className="justify-center items-center">
-          {isLoading ? (
-            <div className="flex justify-center items-center h-40">
-              <p className="text-xl text-[#492d13]">Loading...</p>
-            </div>
-          ) : food_list && food_list.length > 0 ? (
+      <div className="lg:mx-20 lg:mt-20 px-5">
+        {isLoading ? (
+          <div className="flex justify-center items-center h-40">
+            <p className="text-xl text-[#492d13]">Loading...</p>
+          </div>
+        ) : food_list && food_list.length > 0 ? (
+          <div className="featured-products-slider">
             <Slider {...settings} ref={sliderRef}>
               {food_list.slice(5, 15).map((item, i) => (
-                <div
-                  key={i}
-                  className="bg-[#fef7f1] rounded-lg overflow-hidden group z-10"
-                >
-                  <img
-                    src={backendUrl + "/images/" + item.image}
-                    alt=""
-                    className=""
-                  />
-                  <div className="flex flex-col justify-center items-center my-5">
-                    <h1 className="text-[#492d13] font-Outfit font-semibold  sm:text-xl text-center">
-                      {item.name}
-                    </h1>
-                    <div className="flex justify-around w-full items-center  my-3 group-hover:opacity-0 group-hover:scale-0 transition-all duration-200 ">
-                      <h1 className="text-[#f29c52] text-xs sm:text-[16px]  font-Outfit font-medium">
-                        ${item.discount.toFixed(2)} USD{" "}
-                      </h1>
-                      <h1 className="text-neutral-400 text-xs sm:text-[16px]  font-Outfit font-normal line-through">
-                        ${item.price.toFixed(2)} USD
-                      </h1>
+                <div key={i} className="px-2">
+                  <div className="bg-[#fef7f1] rounded-lg overflow-hidden group z-10 h-full flex flex-col">
+                    <div className="relative w-full aspect-square">
+                      <img
+                        src={backendUrl + "/images/" + item.image}
+                        alt={item.name}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
-                    <motion.button
-                      className="px-2 py-2 sm:px-4 sm:py-2 absolute opacity-0 scale-0 group-hover:scale-105 group-hover:opacity-100 bottom-5 border rounded-full bg-[#f29c52] md:text-[16px] text-white font-Outfit sm:font-medium
-                     hover:bg-[#492d13] transition-all duration-300 "
-                      onClick={() => addToCart(item)}
-                    >
-                      {addingStates[item._id] ? "Adding.." : "Add to cart"}
-                    </motion.button>
+                    <div className="flex flex-col justify-between flex-grow p-4">
+                      <h1 className="text-[#492d13] font-Outfit font-semibold text-base sm:text-lg text-center mb-2">
+                        {item.name}
+                      </h1>
+                      <div className="flex justify-around w-full items-center mb-4 group-hover:opacity-0 group-hover:scale-0 transition-all duration-200">
+                        <h1 className="text-[#f29c52] text-sm sm:text-base font-Outfit font-medium">
+                          ${item.discount.toFixed(2)} USD
+                        </h1>
+                        <h1 className="text-neutral-400 text-sm sm:text-base font-Outfit font-normal line-through">
+                          ${item.price.toFixed(2)} USD
+                        </h1>
+                      </div>
+                      <button
+                        className="w-full px-4 py-2 opacity-0 scale-0 group-hover:scale-100 group-hover:opacity-100 border rounded-full bg-[#f29c52] text-sm sm:text-base text-white font-Outfit font-medium hover:bg-[#492d13] transition-all duration-300"
+                        onClick={() => addToCart(item)}
+                      >
+                        {addingStates[item._id] ? "Adding.." : "Add to cart"}
+                      </button>
+                    </div>
                   </div>
                 </div>
               ))}
             </Slider>
-          ) : (
-            <div className="flex justify-center items-center h-40">
-              <p className="text-xl text-[#492d13]">No products available</p>
-            </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="flex justify-center items-center h-40">
+            <p className="text-xl text-[#492d13]">No products available</p>
+          </div>
+        )}
       </div>
     </div>
   );
