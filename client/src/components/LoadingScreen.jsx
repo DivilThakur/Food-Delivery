@@ -1,152 +1,145 @@
 import React from 'react';
+import { motion } from 'framer-motion';
+import brandLogo from '../assets/brandLogo.png';
 
 const LoadingScreen = () => {
   return (
-    <div className="fixed inset-0 bg-gradient-to-br from-orange-50 via-white to-orange-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 flex items-center justify-center z-50 overflow-hidden">
-      {/* Animated Background Elements */}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black"
+    >
+      {/* Animated Background */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-1/2 -left-1/2 w-full h-full bg-orange-100 dark:bg-orange-900/20 rounded-full blur-3xl animate-[pulse_8s_ease-in-out_infinite]"></div>
-        <div className="absolute -bottom-1/2 -right-1/2 w-full h-full bg-orange-100 dark:bg-orange-900/20 rounded-full blur-3xl animate-[pulse_8s_ease-in-out_infinite]" style={{ animationDelay: '4s' }}></div>
+        {/* Existing background animation (adjusted for bottom-right appearance) */}
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            rotate: [0, 180, 360],
+          }}
+          transition={{
+            duration: 12,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+          className="absolute bottom-0 right-0 translate-x-1/4 translate-y-1/4 w-[100vw] h-[100vw] bg-gradient-to-br from-[#492d13]/5 via-[#f29c52]/5 to-transparent"
+        />
+        
+        {/* New top-left background animation */}
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            rotate: [360, 180, 0],
+          }}
+          transition={{
+            duration: 12,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+          className="absolute top-0 left-0 -translate-x-1/4 -translate-y-1/4 w-[100vw] h-[100vw] bg-gradient-to-tl from-[#f29c52]/5 via-[#492d13]/5 to-transparent"
+        />
       </div>
 
-      <div className="text-center space-y-8 relative">
-        {/* Logo and Title with Animation */}
-        <div className="space-y-2">
-          <h1 className="text-6xl font-extrabold">
-            <span className="inline-block animate-[slideIn_0.5s_ease-out]">
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 animate-gradient-x">
-                Snack
-              </span>
-            </span>
-            <span className="inline-block animate-[slideIn_0.5s_ease-out]" style={{ animationDelay: '0.2s' }}>
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-orange-600 via-orange-500 to-orange-600 animate-gradient-x">
-                Dash
-              </span>
-            </span>
-          </h1>
-          <p className="text-gray-600 dark:text-gray-300 text-lg font-medium tracking-wide animate-[fadeIn_0.5s_ease-out]" style={{ animationDelay: '0.4s' }}>
-            Food Delivery
-          </p>
+      {/* Main Content */}
+      <div className="relative z-10 flex flex-col items-center">
+        {/* Logo Container */}
+        <motion.div
+          initial={{ scale: 0.5, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{
+            duration: 0.8,
+            ease: [0.6, -0.05, 0.01, 0.99],
+          }}
+          className="relative"
+        >
+          <motion.div
+            animate={{
+              scale: [1, 1.1, 1],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute inset-0 bg-[#f29c52]/20 blur-2xl rounded-full"
+          />
+          <motion.img
+            src={brandLogo}
+            alt="Brand Logo"
+            className="relative w-40 h-40 object-contain"
+          />
+        </motion.div>
+
+        {/* Loading Animation */}
+        <div className="mt-12 flex flex-col items-center">
+          {/* Progress Bar Container */}
+          <div className="relative w-72 h-[3px] bg-white/10 rounded-full overflow-hidden">
+            {/* Progress Bar */}
+            <motion.div
+              initial={{ width: "0%" }}
+              animate={{ width: "100%" }}
+              transition={{ duration: 5, ease: "easeInOut" }}
+              className="absolute inset-y-0 left-0 bg-[#f29c52]"
+            >
+              {/* Shine Effect */}
+              <motion.div
+                animate={{
+                  x: ["-100%", "100%"],
+                }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+              />
+            </motion.div>
+          </div>
+
+          {/* Loading Text */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="mt-4"
+          >
+            <motion.div
+              animate={{
+                opacity: [0.3, 1, 0.3],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="text-white/80 text-sm tracking-[0.2em] uppercase flex items-center gap-2"
+            >
+              <span>Loading</span>
+              <span className="inline-block animate-pulse">•</span>
+              <span className="inline-block animate-pulse delay-100">•</span>
+              <span className="inline-block animate-pulse delay-200">•</span>
+            </motion.div>
+          </motion.div>
         </div>
 
-        {/* Animated Food Icons */}
-        <div className="relative w-80 h-80 mx-auto perspective-1000">
-          <div className="absolute inset-0 flex items-center justify-center">
-            {/* Pizza Slice */}
-            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 animate-[float3D_6s_cubic-bezier(0.4,0,0.2,1)_infinite]">
-              <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center text-white text-2xl transform-gpu">🍕</div>
-            </div>
-            {/* Burger */}
-            <div className="absolute top-1/2 left-0 transform -translate-y-1/2 animate-[float3D_7s_cubic-bezier(0.4,0,0.2,1)_infinite]" style={{ animationDelay: '1s' }}>
-              <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center text-white text-2xl transform-gpu">🍔</div>
-            </div>
-            {/* Fries */}
-            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 animate-[float3D_5.5s_cubic-bezier(0.4,0,0.2,1)_infinite]" style={{ animationDelay: '2s' }}>
-              <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center text-white text-2xl transform-gpu">🍟</div>
-            </div>
-            {/* Ice Cream */}
-            <div className="absolute top-1/4 right-0 transform translate-x-1/2 animate-[float3D_6.5s_cubic-bezier(0.4,0,0.2,1)_infinite]" style={{ animationDelay: '0.5s' }}>
-              <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center text-white text-2xl transform-gpu">🍦</div>
-            </div>
-            {/* Taco */}
-            <div className="absolute bottom-1/4 right-0 transform translate-x-1/2 animate-[float3D_5.8s_cubic-bezier(0.4,0,0.2,1)_infinite]" style={{ animationDelay: '1.5s' }}>
-              <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center text-white text-2xl transform-gpu">🌮</div>
-            </div>
-            {/* Sushi */}
-            <div className="absolute top-1/3 left-1/4 transform -translate-x-1/2 animate-[float3D_6.2s_cubic-bezier(0.4,0,0.2,1)_infinite]" style={{ animationDelay: '0.8s' }}>
-              <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center text-white text-2xl transform-gpu">🍱</div>
-            </div>
-            {/* Donut */}
-            <div className="absolute bottom-1/3 right-1/4 transform translate-x-1/2 animate-[float3D_5.7s_cubic-bezier(0.4,0,0.2,1)_infinite]" style={{ animationDelay: '1.2s' }}>
-              <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center text-white text-2xl transform-gpu">🍩</div>
-            </div>
-            {/* Hot Dog */}
-            <div className="absolute top-2/3 left-1/3 transform -translate-x-1/2 animate-[float3D_6.8s_cubic-bezier(0.4,0,0.2,1)_infinite]" style={{ animationDelay: '1.8s' }}>
-              <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center text-white text-2xl transform-gpu">🌭</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Loading Text with Enhanced Animation */}
-        <div className="space-y-4">
-          <div className="flex items-center justify-center space-x-2">
-            <p className="text-gray-700 dark:text-gray-200 font-medium animate-[fadeIn_0.5s_ease-out]" style={{ animationDelay: '0.6s' }}>
-              Loading your experience
-            </p>
-            <div className="flex space-x-1">
-              <div className="w-1.5 h-1.5 bg-orange-500 dark:bg-orange-400 rounded-full animate-[bounce_1s_ease-in-out_infinite]" style={{ animationDelay: '0ms' }}></div>
-              <div className="w-1.5 h-1.5 bg-orange-500 dark:bg-orange-400 rounded-full animate-[bounce_1s_ease-in-out_infinite]" style={{ animationDelay: '150ms' }}></div>
-              <div className="w-1.5 h-1.5 bg-orange-500 dark:bg-orange-400 rounded-full animate-[bounce_1s_ease-in-out_infinite]" style={{ animationDelay: '300ms' }}></div>
-            </div>
-          </div>
-          
-          {/* Progress Bar with Enhanced Animation */}
-          <div className="w-48 h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden mx-auto">
-            <div className="h-full bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 animate-[loading_5s_ease-in-out,gradient_3s_ease_infinite] bg-[length:200%_200%]"></div>
-          </div>
+        {/* Decorative Elements */}
+        <div className="absolute bottom-8 left-0 right-0 flex justify-center">
+          <motion.div
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.5, 0.8, 0.5],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="w-48 h-[1px] bg-gradient-to-r from-transparent via-[#f29c52]/30 to-transparent"
+          />
         </div>
       </div>
-
-      <style>
-        {`
-          @keyframes loading {
-            0% { width: 0%; }
-            100% { width: 100%; }
-          }
-          @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-          }
-          @keyframes float3D {
-            0% { 
-              transform: translate3d(0, 0, 0) rotate(0deg);
-              opacity: 1;
-            }
-            20% { 
-              transform: translate3d(8px, -12px, 15px) rotate(3deg);
-              opacity: 0.9;
-            }
-            40% { 
-              transform: translate3d(-4px, -20px, 30px) rotate(-3deg);
-              opacity: 1;
-            }
-            60% { 
-              transform: translate3d(-12px, -12px, 15px) rotate(3deg);
-              opacity: 0.9;
-            }
-            80% { 
-              transform: translate3d(-4px, -4px, 5px) rotate(-2deg);
-              opacity: 0.95;
-            }
-            100% { 
-              transform: translate3d(0, 0, 0) rotate(0deg);
-              opacity: 1;
-            }
-          }
-          @keyframes slideIn {
-            0% { transform: translateY(-20px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
-          }
-          @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-          }
-          .animate-gradient-x {
-            background-size: 200% 200%;
-            animation: gradient 3s ease infinite;
-          }
-          .perspective-1000 {
-            perspective: 1000px;
-          }
-          .transform-gpu {
-            transform-style: preserve-3d;
-            backface-visibility: hidden;
-            will-change: transform, opacity;
-          }
-        `}
-      </style>
-    </div>
+    </motion.div>
   );
 };
 
