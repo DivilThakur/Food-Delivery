@@ -9,8 +9,8 @@ The frontend was personally designed to offer a smooth and intuitive user experi
 
 ## 🔗 Live Demo (Optional)
 
-- 👉 User panel [https://food-delivery-roan-one.vercel.app/](https://food-delivery-five-kohl.vercel.app/)
-- 👉 Admin panel [https://food-delivery-roan-one.vercel.app/](https://food-delivery-admin-indol.vercel.app/)
+- 👉 User panel [https://food-delivery-roan-one.vercel.app/](https://food-delivery-client-chi.vercel.app/)
+- 👉 Admin panel [https://food-delivery-roan-one.vercel.app/](https://food-delivery-admin-dusky-kappa.vercel.app/)
 
 
 ## 🧠 Server Architecture & Deployment
