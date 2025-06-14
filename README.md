@@ -13,6 +13,42 @@ The frontend was personally designed to offer a smooth and intuitive user experi
 - 👉 Admin panel [https://food-delivery-roan-one.vercel.app/](https://food-delivery-admin-indol.vercel.app/)
 
 
+## 🧠 Server Architecture & Deployment
+
+The backend server is designed for **performance**, **scalability**, and **modularity** with production-grade optimizations.
+
+### ⚙️ Redis (Upstash)
+
+Redis is integrated using **Upstash** to cache:
+- Food items
+- Admin-side order fetches
+
+This significantly reduces redundant database calls and enhances response speed, especially for frequent admin interactions.
+
+### 🐳 Dockerized Server
+
+The entire backend is containerized with **Docker** to ensure:
+- Consistent development & deployment environments
+- Isolation from host machine issues
+- Easier CI/CD workflows
+
+### 🔗 Docker Image Repository
+
+Docker image is publicly available at:  
+[`divilthakur/fooddel-backend`](https://hub.docker.com/repository/docker/divilthakur/fooddel-backend)
+
+You can pull the image using:
+
+```bash
+docker pull divilthakur/fooddel-backend
+```
+
+# Run Docker container locally
+```
+docker pull ghcr.io/divilthakur/food-delivery-server
+docker run -p 4000:4000 ghcr.io/divilthakur/food-delivery-server
+```
+
 
 ## 🔐 Admin Access
 To register a new admin, use the following API endpoint via Postman:
@@ -29,7 +65,6 @@ password
 ## 🚀 Features
 
 👤 User Panel
-
 
 - 📦 Browse food items and categories
 
@@ -59,7 +94,7 @@ Backend Capabilities
 
 - 📂 File upload support (e.g., food images)
 
----
+
 
 ## 🧰 Tech Stack
 
@@ -76,7 +111,6 @@ Backend Capabilities
 - JWT for auth
 
 
----
 
 ## 🛠️ Getting Started Locally
 
@@ -136,7 +170,9 @@ MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
 RAZORPAY_KEY_ID=your_razorpay_key_id
 RAZORPAY_KEY_SECRET=your_razorpay_key_secret
-
+CLOUDINARY_API_KEY=api_key
+CLOUDINARY_API_SECRET=api_secret
+CLOUDINARY_CLOUD_NAME=cloud_name
 
 # Client & Admin
 VITE_RAZORPAY_KEY_ID = key
