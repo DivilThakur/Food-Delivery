@@ -20,21 +20,18 @@ const AppContextProvider = (props) => {
   const [totalQuantity, setTotalQuantity] = useState(null);
   const [totalAmount, setTotalAmount] = useState(null);
   const [token, setToken] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortType, setSortType] = useState("Default");
 
   useEffect(() => {
     loadFoods();
   }, []);
-
-  useEffect(() => {
-    console.log("cartItems", cartItems);
-  });
 
   const loadFoods = async () => {
     try {
       setIsLoading(true);
       const { data } = await axios.get(backendUrl + "/api/food/get-food");
       setFood_List(data.foods);
-      setDisplayFood(data.foods);
     } catch (error) {
       console.log("error in fetching food list ", error);
     } finally {
@@ -131,16 +128,8 @@ const AppContextProvider = (props) => {
     }
   };
 
-  const categorise = (category) => {
-    if (category === "All") {
-      setCategory("All");
-      setDisplayFood(food_list);
-    } else {
-      const items = food_list.filter((item) => item.category == `${category}`);
-      setCategory(category);
-      setDisplayFood(items);
-    }
-    setCurrPage(1);
+  const categorise = (newCategory) => {
+    setCategory(newCategory);
   };
 
   const clearCart = async () => {
@@ -153,6 +142,38 @@ const AppContextProvider = (props) => {
       setCartItems([]);
     }
   };
+
+  const filterAndSortFood = () => {
+    let currentFood = [...food_list]; // Start with a fresh copy of the original food_list
+
+    // Apply category filter
+    if (category !== "All") {
+      currentFood = currentFood.filter((item) => item.category === category);
+    }
+
+    // Apply search filter
+    if (searchTerm) {
+      const lowerCaseSearchTerm = searchTerm.toLowerCase();
+      currentFood = currentFood.filter(
+        (item) =>
+          (item.name && item.name.toLowerCase().includes(lowerCaseSearchTerm))
+      );
+    }
+
+    // Apply sorting
+    if (sortType === "Price: Low to High") {
+      currentFood.sort((a, b) => (a.discount || 0) - (b.discount || 0));
+    } else if (sortType === "Price: High to Low") {
+      currentFood.sort((a, b) => (b.discount || 0) - (a.discount || 0));
+    }
+    // If sortType is "Default", no additional sorting is needed as we started with food_list
+
+    setDisplayFood(currentFood);
+  };
+
+  useEffect(() => {
+    filterAndSortFood();
+  }, [food_list, category, searchTerm, sortType]);
 
   const value = {
     category,
@@ -180,6 +201,10 @@ const AppContextProvider = (props) => {
     food_list,
     clearCart,
     isLoading,
+    searchTerm,
+    setSearchTerm,
+    sortType,
+    setSortType,
   };
 
   return (

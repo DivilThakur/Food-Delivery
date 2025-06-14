@@ -5,14 +5,17 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const Orders = () => {
-  const { orderData, backendUrl, fetchOrderData, token } = useContext(appContext);
+  const { orderData, backendUrl, fetchOrderData, token } =
+    useContext(appContext);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const loadOrders = async () => {
       if (!backendUrl) {
         console.error("Backend URL is not configured");
-        toast.error("Backend URL is not configured. Please check your environment variables.");
+        toast.error(
+          "Backend URL is not configured. Please check your environment variables."
+        );
         setIsLoading(false);
         return;
       }
@@ -26,21 +29,32 @@ const Orders = () => {
 
       try {
         setIsLoading(true);
-        console.log("Fetching orders from:", backendUrl + "/api/admin/getOrders");
+        console.log(
+          "Fetching orders from:",
+          backendUrl + "/api/admin/getOrders"
+        );
         const response = await axios.get(backendUrl + "/api/admin/getOrders", {
-          headers: { token }
+          headers: { token },
         });
         console.log("Orders response:", response.data);
-        
+
         if (response.data.success) {
           console.log("Orders data:", response.data.data);
         } else {
-          console.error("Server returned unsuccessful response:", response.data);
-          toast.error("Failed to fetch orders: " + (response.data.message || "Unknown error"));
+          console.error(
+            "Server returned unsuccessful response:",
+            response.data
+          );
+          toast.error(
+            "Failed to fetch orders: " +
+              (response.data.message || "Unknown error")
+          );
         }
       } catch (error) {
         console.error("Error fetching orders:", error);
-        toast.error("Failed to fetch orders: " + (error.message || "Unknown error"));
+        toast.error(
+          "Failed to fetch orders: " + (error.message || "Unknown error")
+        );
       } finally {
         setIsLoading(false);
       }
@@ -74,7 +88,7 @@ const Orders = () => {
           status: newStatus,
         },
         {
-          headers: { token }
+          headers: { token },
         }
       );
 
@@ -82,11 +96,16 @@ const Orders = () => {
         toast.success("Status Updated");
         fetchOrderData();
       } else {
-        toast.error("Failed to update status: " + (response.data.message || "Unknown error"));
+        toast.error(
+          "Failed to update status: " +
+            (response.data.message || "Unknown error")
+        );
       }
     } catch (err) {
       console.error("Error updating order status:", err);
-      toast.error("Failed to update status: " + (err.message || "Unknown error"));
+      toast.error(
+        "Failed to update status: " + (err.message || "Unknown error")
+      );
     }
   };
 
@@ -96,11 +115,15 @@ const Orders = () => {
 
       {isLoading ? (
         <div className="flex justify-center items-center h-40">
-          <p className="text-xl text-gray-600 dark:text-gray-300">Loading orders...</p>
+          <p className="text-xl text-gray-600 dark:text-gray-300">
+            Loading orders...
+          </p>
         </div>
       ) : !token ? (
         <div className="flex justify-center items-center h-40">
-          <p className="text-xl text-gray-600 dark:text-gray-300">Please log in to view orders</p>
+          <p className="text-xl text-gray-600 dark:text-gray-300">
+            Please log in to view orders
+          </p>
         </div>
       ) : orderData && orderData.length > 0 ? (
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
@@ -135,7 +158,8 @@ const Orders = () => {
                       statusColors[order.status]
                     }`}
                   >
-                    {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                    {order.status.charAt(0).toUpperCase() +
+                      order.status.slice(1)}
                   </span>
                   <select
                     value={order.status}
@@ -170,7 +194,7 @@ const Orders = () => {
                   </div>
                   <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600 flex justify-between font-semibold text-gray-800 dark:text-gray-100">
                     <span>Total:</span>
-                    <span>INR {order.amount}</span>
+                    <span>${order.amount.toFixed(2)}</span>
                   </div>
                 </div>
               </div>
@@ -179,7 +203,9 @@ const Orders = () => {
         </div>
       ) : (
         <div className="flex justify-center items-center h-40">
-          <p className="text-xl text-gray-600 dark:text-gray-300">No orders available</p>
+          <p className="text-xl text-gray-600 dark:text-gray-300">
+            No orders available
+          </p>
         </div>
       )}
     </div>

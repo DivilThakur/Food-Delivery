@@ -12,16 +12,16 @@ const Orders = () => {
 
   const getStatusStyle = (status) => {
     switch (status.toLowerCase()) {
-      case 'preparing':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'prepared':
-        return 'bg-blue-100 text-blue-800 border-blue-200';
-      case 'ready':
-        return 'bg-purple-100 text-purple-800 border-purple-200';
-      case 'delivered':
-        return 'bg-green-100 text-green-800 border-green-200';
+      case "preparing":
+        return "bg-yellow-100 text-yellow-800 border-yellow-200";
+      case "prepared":
+        return "bg-blue-100 text-blue-800 border-blue-200";
+      case "ready":
+        return "bg-purple-100 text-purple-800 border-purple-200";
+      case "delivered":
+        return "bg-green-100 text-green-800 border-green-200";
       default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
+        return "bg-gray-100 text-gray-800 border-gray-200";
     }
   };
 
@@ -65,53 +65,73 @@ const Orders = () => {
   return (
     <div>
       <DynamicBg title={"Orders"} />
-      <div className="min-h-[50vh] flex flex-col justify-center items-center py-32">
+      <div className="min-h-[60vh] flex flex-col items-center py-16 md:py-24 lg:py-32 px-4 sm:px-8 lg:px-20">
         {orderData.length === 0 ? (
-          <div className="text-4xl text-[#492d13] text-center font-Outfit font-semibold">
-            No orders yet 😥
+          <div className="flex flex-col items-center justify-center text-center h-full mt-10 md:mt-20">
+            <img
+              src={assets.empty_cart_icon}
+              alt="No orders"
+              className="w-24 h-24 md:w-32 md:h-32 mb-6 opacity-70"
+            />
+            <p className="text-3xl md:text-4xl text-amber-950 font-Outfit font-semibold mb-4">
+              No orders yet!
+            </p>
+            <p className="text-lg text-gray-600 font-Outfit">
+              Looks like you haven't placed any orders. Start exploring our
+              delicious food!
+            </p>
           </div>
         ) : (
           <>
-            <div className="w-full flex justify-end px-4 md:px-10 lg:px-28 mb-6">
+            <div className="w-full flex justify-end mb-8">
               <button
                 onClick={handleTrackOrders}
                 disabled={isTracking}
-                className="border py-2 px-6 rounded-lg bg-[#f29c52] text-white font-Outfit font-medium
-                hover:bg-[#492d13] transition-all duration-200 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                className="px-8 py-3 rounded-full bg-amber-600 text-white font-Outfit font-semibold text-lg
+                hover:bg-amber-800 transition-all duration-300 shadow-lg hover:shadow-xl disabled:bg-gray-400 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-opacity-50"
               >
                 {isTracking ? "Updating..." : "Track All Orders"}
               </button>
             </div>
-            <div className="mx-2 md:mx-10 lg:mx-28 space-y-10">
+            <div className="w-full max-w-6xl space-y-8">
               {orderData.map((order, idx) => (
                 <div
                   key={idx}
-                  className="border-[3px] border-[#fff5ed] p-4 gap-1 xl:gap-10 grid grid-cols-4 lg:grid-cols-7 justify-center items-center space-x-4 xl:space-x-8"
+                  className="flex flex-col md:flex-row items-center bg-white border border-gray-200 rounded-xl p-4 md:p-6 shadow-md hover:shadow-lg transition-all duration-300 space-y-4 md:space-y-0 md:space-x-6"
                 >
                   <img
                     src={assets.parcelicon}
-                    alt=""
-                    className="flex w-10 md:w-24"
+                    alt="Parcel Icon"
+                    className="w-16 h-16 md:w-20 md:h-20 flex-shrink-0"
                   />
-                  <div className="col-span-3 lg:col-span-2 font-Outfit font-normal text-[12px] md:text-[16px]">
-                    {order?.items?.map((item, i) => {
-                      if (!item) return '';
-                      if (i === (order.items.length - 1)) {
-                        return `${item?.name || 'Unknown'} x ${item?.quantity || 0}`;
-                      } else {
-                        return ` ${item?.name || 'Unknown'} x ${item?.quantity || 0}, `;
-                      }
-                    })}
+                  <div className="flex-1 flex flex-col md:flex-row items-center w-full md:space-x-6 space-y-4 md:space-y-0">
+                    <div className="flex-1 text-center md:text-left font-Outfit font-normal text-base text-gray-800">
+                      <p className="font-medium text-amber-900 mb-1">
+                        Items Ordered:
+                      </p>
+                      {order?.items?.map((item, i) => (
+                        <span key={i} className="block md:inline-block">
+                          {`${item?.name || "Unknown"} x ${
+                            item?.quantity || 0
+                          }`}
+                          {i < order.items.length - 1 && ", "}
+                        </span>
+                      ))}
+                    </div>
+                    <p className="text-lg font-Outfit font-semibold text-amber-700 text-center md:text-right w-full md:w-auto">
+                      Amount: ${order?.amount?.toFixed(2) || "0.00"}
+                    </p>
+                    <p className="text-lg font-Outfit font-medium text-gray-700 text-center md:text-right w-full md:w-auto">
+                      Quantity: {order?.items?.length || 0}
+                    </p>
                   </div>
-                  <p className="font-Outfit font-medium text-[12px] md:text-[16px] text-center p-1">
-                    ${(order?.amount || 0).toFixed(2)}
-                  </p>
-                  <p className="font-Outfit font-medium text-[12px] md:text-[16px] text-center p-1">
-                    Items: {order?.items?.length || 0}
-                  </p>
-                  <div className="font-Outfit font-medium text-[12px] md:text-[16px] text-center">
-                    <span className={`px-3 py-1 rounded-full border ${getStatusStyle(order?.status || '')}`}>
-                      {order?.status || 'Unknown'}
+                  <div className="font-Outfit font-semibold text-base text-center md:text-right w-full md:w-auto mt-4 md:mt-0">
+                    <span
+                      className={`px-4 py-2 rounded-full border ${getStatusStyle(
+                        order?.status || ""
+                      )}`}
+                    >
+                      {order?.status || "Unknown"}
                     </span>
                   </div>
                 </div>

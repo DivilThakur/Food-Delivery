@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import { MoveRight } from 'lucide-react'
 const Discount = () => {
     return (
-        <div className=''>
+        <div className='my-24 mx-10'>
             <div className='relative bg-[#fff5ed] flex '>
                 <motion.img
                     initial={{y:100,opacity:0}}

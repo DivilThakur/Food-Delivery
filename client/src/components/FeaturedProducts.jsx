@@ -23,7 +23,7 @@ const FeaturedProducts = () => {
     dots: true,
     dotsClass: "slick-dots",
     customPaging: function (i) {
-      return <div className="w-2 h-2 bg-[#f29c52] rounded-full mt-4"></div>;
+      return <div className="w-2 h-2 bg-amber-600 rounded-full mt-4"></div>;
     },
     responsive: [
       {
@@ -32,6 +32,7 @@ const FeaturedProducts = () => {
           slidesToShow: 3,
           slidesToScroll: 3,
           infinite: true,
+          dots: true,
         },
       },
       {
@@ -40,6 +41,7 @@ const FeaturedProducts = () => {
           slidesToShow: 2,
           slidesToScroll: 2,
           initialSlide: 2,
+          dots: false,
         },
       },
       {
@@ -47,6 +49,7 @@ const FeaturedProducts = () => {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
+          dots: false,
         },
       },
     ],
@@ -61,62 +64,62 @@ const FeaturedProducts = () => {
   };
 
   return (
-    <div className="relative my-20">
-      <div className="flex justify-between items-center lg:mx-20 px-5">
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-Outfit font-bold text-[#492d13]">
+    <div className="relative my-16 md:my-24 lg:my-32">
+      <div className="flex flex-col sm:flex-row justify-between items-center px-4 sm:px-8 lg:px-20 mb-8">
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-Outfit font-extrabold text-amber-950 mb-4 sm:mb-0">
           Featured Products
-        </h1>
-        <div className="flex gap-2">
+        </h2>
+        <div className="flex gap-3">
           <button
             onClick={handlePrev}
-            className="p-2 border rounded-full hover:bg-[#f29c52] hover:text-white transition-all duration-200"
+            className="p-3 border border-amber-300 rounded-full text-amber-700 hover:bg-amber-600 hover:text-white transition-all duration-300 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-opacity-50"
           >
-            <MoveLeft />
+            <MoveLeft className="w-6 h-6" />
           </button>
           <button
             onClick={handleNext}
-            className="p-2 border rounded-full hover:bg-[#f29c52] hover:text-white transition-all duration-200"
+            className="p-3 border border-amber-300 rounded-full text-amber-700 hover:bg-amber-600 hover:text-white transition-all duration-300 shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-opacity-50"
           >
-            <MoveRight />
+            <MoveRight className="w-6 h-6" />
           </button>
         </div>
       </div>
-      <div className="lg:mx-20 lg:mt-20 px-5">
+      <div className="px-4 sm:px-8 lg:px-20 mt-10 md:mt-16 lg:mt-20">
         {isLoading ? (
           <div className="flex justify-center items-center h-40">
-            <p className="text-xl text-[#492d13]">Loading...</p>
+            <p className="text-xl text-amber-800 font-Outfit">Loading products...</p>
           </div>
         ) : food_list && food_list.length > 0 ? (
           <div className="featured-products-slider">
             <Slider {...settings} ref={sliderRef}>
               {food_list && food_list.length > 0 && food_list.slice(5, 15).map((item, i) => (
                 item && (
-                  <div key={i} className="px-2">
-                    <div className="bg-[#fef7f1] rounded-lg overflow-hidden group z-10 h-full flex flex-col">
-                      <div className="relative w-full aspect-square">
+                  <div key={i} className="px-3 py-2">
+                    <div className="bg-white rounded-xl overflow-hidden group shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 h-full flex flex-col">
+                      <div className="relative w-full aspect-square overflow-hidden rounded-t-xl">
                         <img
-                          src={item?.image || ''}
+                          src={item?.image || assets.placeholder_image}
                           alt={item?.name || 'Product'}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                         />
                       </div>
                       <div className="flex flex-col justify-between flex-grow p-4">
-                        <h1 className="text-[#492d13] font-Outfit font-semibold text-base sm:text-lg text-center mb-2">
+                        <h3 className="text-amber-950 font-Outfit font-semibold text-lg sm:text-xl text-center mb-2 leading-tight">
                           {item?.name || 'Product Name'}
-                        </h1>
-                        <div className="flex justify-around w-full items-center mb-4 group-hover:opacity-0 group-hover:scale-0 transition-all duration-200">
-                          <h1 className="text-[#f29c52] text-sm sm:text-base font-Outfit font-medium">
-                            ${(item?.discount || 0).toFixed(2)} USD
-                          </h1>
-                          <h1 className="text-neutral-400 text-sm sm:text-base font-Outfit font-normal line-through">
-                            ${(item?.price || 0).toFixed(2)} USD
-                          </h1>
+                        </h3>
+                        <div className="flex justify-center gap-4 w-full items-center mb-4 transition-all duration-200">
+                          <p className="text-amber-600 text-lg sm:text-xl font-Outfit font-bold">
+                            ${(item?.discount || 0).toFixed(2)} <span className="text-sm font-normal">USD</span>
+                          </p>
+                          <p className="text-neutral-400 text-base sm:text-lg font-Outfit font-medium line-through">
+                            ${(item?.price || 0).toFixed(2)} <span className="text-sm font-normal">USD</span>
+                          </p>
                         </div>
                         <button
-                          className="w-full px-4 py-2 opacity-0 scale-0 group-hover:scale-100 group-hover:opacity-100 border rounded-full bg-[#f29c52] text-sm sm:text-base text-white font-Outfit font-medium hover:bg-[#492d13] transition-all duration-300"
+                          className="w-full px-6 py-3 rounded-full bg-amber-600 text-base sm:text-lg text-white font-Outfit font-medium hover:bg-amber-800 transition-all duration-300 shadow-lg hover:shadow-xl transform group-hover:scale-105 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-opacity-50"
                           onClick={() => item?._id && addToCart(item)}
                         >
-                          {item?._id && addingStates[item._id] ? "Adding.." : "Add to cart"}
+                          {item?._id && addingStates[item._id] ? "Adding..." : "Add to cart"}
                         </button>
                       </div>
                     </div>
@@ -127,7 +130,7 @@ const FeaturedProducts = () => {
           </div>
         ) : (
           <div className="flex justify-center items-center h-40">
-            <p className="text-xl text-[#492d13]">No products available</p>
+            <p className="text-xl text-amber-800 font-Outfit">No products available</p>
           </div>
         )}
       </div>

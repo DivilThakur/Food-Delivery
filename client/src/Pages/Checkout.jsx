@@ -4,6 +4,7 @@ import { AppContext } from "../context/AppContext";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -14,10 +15,15 @@ const Checkout = () => {
     backendUrl,
     token,
     clearCart,
+    USD_TO_INR_RATE,
   } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
   const deliveryFee = 4;
   const finalAmount = totalAmount + deliveryFee;
+
+  // Calculate original USD amount from finalAmount (INR)
+  const originalUsdAmount = (finalAmount / USD_TO_INR_RATE).toFixed(2);
+
   useEffect(() => {
     console.log(finalAmount);
   }, [finalAmount]);
@@ -38,17 +44,16 @@ const Checkout = () => {
     e.preventDefault();
     setLoading(true);
 
-    const simplifiedItems = cartItems?.map((item) => ({
-      name: item?.productId?.name || 'Unknown Product',
-      price: item?.productId?.discount || 0,
-      quantity: item?.quantity || 0,
-    })) || [];
-
-    console.log(formData);
+    const simplifiedItems =
+      cartItems?.map((item) => ({
+        name: item?.productId?.name || "Unknown Product",
+        price: item?.productId?.discount || 0,
+        quantity: item?.quantity || 0,
+      })) || [];
 
     const orderData = {
       items: simplifiedItems,
-      amount: finalAmount * 85,
+      amount: finalAmount,
       address: formData,
     };
 
@@ -63,41 +68,42 @@ const Checkout = () => {
         const razorpayOrder = response.data.order;
         const options = {
           key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-          amount: finalAmount * 85 * 100,
-          Currency: "INR",
+          amount: finalAmount * 100,
+          currency: "INR",
+          name: "SnackDash", // Your business name
+          description: `Total amount: $${originalUsdAmount}`,
           order_id: razorpayOrder.id,
           handler: async function (paymentResponse) {
-            await verifyPayment(paymentResponse);
+            await verifyPayment(paymentResponse, response.data.orderData);
           },
           prefill: {
-            name: "Divil Thakur", // Replace with actual user's name
-            email: "Divil@example.com", // Replace with actual user's email
-            contact: "+11 22 33 44 55", // Replace with actual user's contact
+            name: formData.firstName + " " + formData.lastName,
+            email: formData.email,
+            contact: formData.phone,
           },
           theme: {
-            color: "#F37254", // Customize the color if needed
+            color: "#F37254",
           },
         };
 
         const razorpay = new window.Razorpay(options);
         razorpay.open();
       } else {
-        console.log("error in handleform submit");
+        toast.error("Error placing order. Please try again.");
       }
     } catch (error) {
-      console.log("errror", error.message);
+      console.error("Error placing order", error.message);
+      toast.error("An error occurred. Please try again.");
     }
     setLoading(false);
   };
 
   const onChangeHandler = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-
+    const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const verifyPayment = async (paymentResponse) => {
+  const verifyPayment = async (paymentResponse, orderData) => {
     try {
       const response = await axios.post(
         backendUrl + "/api/order/verifyPayment",
@@ -105,155 +111,209 @@ const Checkout = () => {
           paymentId: paymentResponse.razorpay_payment_id,
           orderId: paymentResponse.razorpay_order_id,
           signature: paymentResponse.razorpay_signature,
+          orderData: orderData,
         },
         { headers: { token } }
       );
 
       if (response.data.success) {
-        toast.success("Payment Successfull");
+        toast.success("Payment Successful!");
         clearCart();
         navigate("/orders");
       } else {
-        alert("Payment verification failed!");
+        toast.error("Payment verification failed!");
       }
     } catch (error) {
       console.error("Error verifying payment", error);
-      alert("Payment verification failed!");
+      toast.error("Payment verification failed!");
     }
+  };
+
+  const formVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.7, ease: "easeOut" },
+    },
+  };
+
+  const inputVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.4, ease: "easeOut" },
+    },
+  };
+
+  const summaryVariants = {
+    hidden: { opacity: 0, x: 20 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.7, ease: "easeOut" },
+    },
   };
 
   return (
     <div>
       <DynamicBg title={"Checkout"} />
-      <form
+      <motion.form
         onSubmit={handleFormSubmit}
-        className=" flex flex-col md:flex-row justify-around my-20 lg:mx-20 "
+        className="flex flex-col lg:flex-row gap-12 max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8"
+        variants={formVariants}
+        initial="hidden"
+        animate="visible"
       >
-        <div className=" w-full p-4  flex flex-col space-y-10">
-          <h1 className="text-3xl text-[#492d13] font-Outfit font-medium text-center">
+        {/* Delivery Information */}
+        <div className="flex-1 bg-white p-8 rounded-xl shadow-lg border border-gray-100">
+          <h1 className="text-3xl font-bold text-amber-950 mb-8 text-center">
             Delivery Information
           </h1>
-          <div className="grid grid-cols-2 gap-5">
-            <input
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <motion.input
+              variants={inputVariants}
               type="text"
               onChange={onChangeHandler}
               value={formData.firstName}
               placeholder="First name"
               name="firstName"
               required
-              className="border p-2 outline-[#492d13] rounded-lg"
+              className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 text-base text-gray-700 placeholder-gray-500 transition-all duration-300"
             />
-            <input
+            <motion.input
+              variants={inputVariants}
+              transition={{ ...inputVariants.visible.transition, delay: 0.1 }}
               type="text"
               onChange={onChangeHandler}
               value={formData.lastName}
               placeholder="Last name"
               name="lastName"
               required
-              className="border p-2 outline-[#492d13] rounded-lg"
+              className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 text-base text-gray-700 placeholder-gray-500 transition-all duration-300"
             />
-            <input
-              type="text"
+            <motion.input
+              variants={inputVariants}
+              transition={{ ...inputVariants.visible.transition, delay: 0.2 }}
+              type="email"
               onChange={onChangeHandler}
               value={formData.email}
               placeholder="Email address"
               name="email"
               required
-              className="border col-span-2 p-2 outline-[#492d13] rounded-lg"
+              className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 text-base text-gray-700 placeholder-gray-500 transition-all duration-300 col-span-full"
             />
-            <input
+            <motion.input
+              variants={inputVariants}
+              transition={{ ...inputVariants.visible.transition, delay: 0.3 }}
               type="text"
               onChange={onChangeHandler}
               value={formData.street}
               placeholder="Street"
               name="street"
               required
-              className="border col-span-2 p-2 outline-[#492d13] rounded-lg"
+              className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 text-base text-gray-700 placeholder-gray-500 transition-all duration-300 col-span-full"
             />
-            <input
+            <motion.input
+              variants={inputVariants}
+              transition={{ ...inputVariants.visible.transition, delay: 0.4 }}
               type="text"
               onChange={onChangeHandler}
               value={formData.city}
               placeholder="City"
               name="city"
               required
-              className="border p-2 outline-[#492d13] rounded-lg"
+              className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 text-base text-gray-700 placeholder-gray-500 transition-all duration-300"
             />
-            <input
+            <motion.input
+              variants={inputVariants}
+              transition={{ ...inputVariants.visible.transition, delay: 0.5 }}
               type="text"
               onChange={onChangeHandler}
               value={formData.state}
               placeholder="State"
               name="state"
-              required
-              className="border p-2 outline-[#492d13] rounded-lg"
+              className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 text-base text-gray-700 placeholder-gray-500 transition-all duration-300"
             />
-            <input
+            <motion.input
+              variants={inputVariants}
+              transition={{ ...inputVariants.visible.transition, delay: 0.6 }}
               type="text"
               onChange={onChangeHandler}
               value={formData.zipCode}
               placeholder="Zip code"
               name="zipCode"
-              required
-              className="border p-2 outline-[#492d13] rounded-lg"
+              className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 text-base text-gray-700 placeholder-gray-500 transition-all duration-300"
             />
-            <input
+            <motion.input
+              variants={inputVariants}
+              transition={{ ...inputVariants.visible.transition, delay: 0.7 }}
               type="text"
               onChange={onChangeHandler}
               value={formData.country}
               placeholder="Country"
               name="country"
               required
-              className="border p-2 outline-[#492d13] rounded-lg"
+              className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 text-base text-gray-700 placeholder-gray-500 transition-all duration-300"
             />
-            <input
-              type="text"
+            <motion.input
+              variants={inputVariants}
+              transition={{ ...inputVariants.visible.transition, delay: 0.8 }}
+              type="tel"
               onChange={onChangeHandler}
               value={formData.phone}
-              placeholder="Phone"
+              placeholder="Phone number"
               name="phone"
               required
-              className="border col-span-2 p-2 outline-[#492d13] rounded-lg"
+              className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 text-base text-gray-700 placeholder-gray-500 transition-all duration-300 col-span-full"
             />
           </div>
         </div>
-        <div className="flex flex-col w-full px-5 md:px-14 xl:px-28 py-10 space-y-4">
-          <h1 className="text-3xl text-[#492d13] font-Outfit font-semibold text-center">
-            Cart Totals
-          </h1>
-          <div className="flex justify-between">
-            <p className="text-lg font-Outfit font-normal">Total Items</p>
-            <p className="text-lg font-Outfit font-normal">{totalQuantity}</p>
+
+        {/* Order Summary */}
+        <motion.div
+          variants={summaryVariants}
+          initial="hidden"
+          animate="visible"
+          className="w-full lg:w-2/5 bg-white p-8 rounded-xl shadow-lg border border-gray-100 flex flex-col justify-between"
+        >
+          <div>
+            <h1 className="text-3xl font-bold text-amber-950 mb-8 text-center">
+              Order Summary
+            </h1>
+            <div className="space-y-4 text-lg text-gray-700">
+              <div className="flex justify-between">
+                <p>Subtotal</p>
+                <p className="font-semibold">${totalAmount.toFixed(2)}</p>
+              </div>
+              <div className="flex justify-between">
+                <p>Delivery Fee</p>
+                <p className="font-semibold">${deliveryFee.toFixed(2)}</p>
+              </div>
+              <div className="flex justify-between border-t border-gray-200 pt-4 text-xl font-bold text-amber-950">
+                <p>Total</p>
+                <p>${finalAmount.toFixed(2)}</p>
+              </div>
+            </div>
           </div>
-          <hr />
-          <div className="flex justify-between">
-            <p className="text-lg font-Outfit font-normal">Subtotal</p>
-            <p className="text-lg font-Outfit font-normal">${totalAmount}</p>
-          </div>
-          <hr />
-          <div className="flex justify-between">
-            <p className="text-lg font-Outfit font-normal">Delivery Fee</p>
-            <p className="text-lg font-Outfit font-normal">${deliveryFee}</p>
-          </div>
-          <hr />
-          <div className="flex justify-between">
-            <p className="text-lg font-Outfit font-semibold text-[#492d13]">
-              Total
-            </p>
-            <p className="text-lg font-Outfit font-semibold text-[#492d13]">
-              ${totalAmount + deliveryFee}
-            </p>
-          </div>
-          <div></div>
-          <button
+
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             type="submit"
-            className="px-6 py-3 mx-auto bg-[#f29c52] rounded-lg text-white font-Outfit font-medium
-                    hover:bg-[#492d13] transition-all duration-200 "
+            disabled={cartItems.length === 0 || loading}
+            className={`w-full mt-8 px-6 py-3 rounded-full font-semibold text-white text-lg shadow-md
+                       ${
+                         cartItems.length === 0 || loading
+                           ? "bg-gray-400 cursor-not-allowed"
+                           : "bg-amber-600 hover:bg-amber-700 transition-colors duration-300"
+                       }`}
           >
-            {loading ? "Loading..." : "Proceed to Payment"}
-          </button>
-        </div>
-      </form>
+            {loading ? "Processing..." : "Proceed to Payment"}
+          </motion.button>
+        </motion.div>
+      </motion.form>
     </div>
   );
 };

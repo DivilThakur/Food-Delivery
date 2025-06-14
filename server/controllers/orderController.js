@@ -14,19 +14,9 @@ export const placeOrder = async (req, res) => {
   try {
     const { items, amount, address } = req.body;
 
-    const newOrder = new orderModel({
-      userId: req.user,
-      items: items,
-      amount: amount,
-      address: address,
-    });
-
-    await newOrder.save();
-
     const options = {
-      amount: amount * 100,
+      amount: Math.round(amount * 100),
       currency: "INR",
-      receipt: newOrder._id.toString(),
       payment_capture: 1,
     };
 
@@ -39,16 +29,17 @@ export const placeOrder = async (req, res) => {
         });
       }
 
-      newOrder.razorpayOrderId = order.id;
-      await newOrder.save();
       res.json({
         success: true,
-        message: "order successfull",
+        message: "order created",
         order: order,
-        orderId: newOrder._id,
+        orderData: {
+          items,
+          amount,
+          address,
+          userId: req.user
+        }
       });
-
-      await userModel.findByIdAndUpdate(req.user, { cartData: [] });
     });
   } catch (error) {
     console.log("error in place order (order controller) ", error.message);
@@ -58,12 +49,8 @@ export const placeOrder = async (req, res) => {
 
 export const verifyPayment = async (req, res) => {
   try {
-    const { paymentId, orderId, signature } = req.body;
+    const { paymentId, orderId, signature, orderData } = req.body;
 
-    const order = await orderModel.findOne({ razorpayOrderId: orderId });
-    if (!order) {
-      return res.json({ success: false, message: "order not found" });
-    }
     const secret = process.env.RAZORPAY_SECRET;
     const generatedSignature = crypto
       .createHmac("sha256", secret)
@@ -71,11 +58,22 @@ export const verifyPayment = async (req, res) => {
       .digest("hex");
 
     if (generatedSignature === signature) {
-      order.payment = true;
-      await order.save();
+      // Create and save the order only after successful payment verification
+      const newOrder = new orderModel({
+        userId: orderData.userId,
+        items: orderData.items,
+        amount: orderData.amount,
+        address: orderData.address,
+        razorpayOrderId: orderId,
+        payment: true
+      });
+
+      await newOrder.save();
+      await userModel.findByIdAndUpdate(orderData.userId, { cartData: [] });
+      
       res.json({ success: true, message: "Payment verified successfully" });
     } else {
-      res.json({ success: false, message: "Payment verified failed" });
+      res.json({ success: false, message: "Payment verification failed" });
     }
   } catch (error) {
     console.log("error in payment verification", error.message);
@@ -86,7 +84,7 @@ export const verifyPayment = async (req, res) => {
 export const getOrders = async (req, res) => {
   try {
     const userId = req.user;
-    const orderData = await orderModel.find({ userId });
+    const orderData = await orderModel.find({ userId, payment: true });
     res.json({ success: true, data: orderData });
   } catch (error) {
     console.log("error in get orders", error.message);
