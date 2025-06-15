@@ -109,10 +109,10 @@ const FeaturedProducts = () => {
                         </h3>
                         <div className="flex justify-center gap-4 w-full items-center mb-4 transition-all duration-200">
                           <p className="text-amber-600 text-lg sm:text-xl font-Outfit font-bold">
-                            ${(item?.discount || 0).toFixed(2)} <span className="text-sm font-normal">USD</span>
+                            {(item?.discount || 0).toFixed(2)} <span className="text-sm font-normal">INR</span>
                           </p>
                           <p className="text-neutral-400 text-base sm:text-lg font-Outfit font-medium line-through">
-                            ${(item?.price || 0).toFixed(2)} <span className="text-sm font-normal">USD</span>
+                            {(item?.price || 0).toFixed(2)} <span className="text-sm font-normal">INR</span>
                           </p>
                         </div>
                         <button

@@ -31,21 +31,22 @@ const Products = () => {
   };
 
   return (
-    <motion.div
-      className="mt-16 sm:mt-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto"
-      variants={sectionVariants}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.3 }}
-    >
-      <div className="text-center mb-12">
+    <motion.div className="mt-16 sm:mt-24 px-4 lg:px-8 max-w-7xl mx-auto">
+      <motion.div
+        className="text-center mb-12"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        variants={sectionVariants}
+        whileInView="visible"
+      >
         <h1 className="inline-block px-6 py-2 rounded-full text-amber-600 border border-amber-600 font-semibold uppercase text-sm tracking-wide shadow-sm">
           Popular Items
         </h1>
         <h2 className="text-3xl sm:text-4xl font-extrabold text-amber-950 mt-4">
           Our Popular Products
         </h2>
-      </div>
+      </motion.div>
 
       {isLoading ? (
         <div className="flex justify-center items-center min-h-[200px]">
@@ -77,14 +78,14 @@ const Products = () => {
                       {item?.name || "Product Name"}
                     </h3>
                     <div className="flex items-center justify-center space-x-3 mb-4">
-                      <p className="text-amber-600 text-lg font-bold">
-                        ${(item?.discount || 0).toFixed(2)}
+                      <p className="text-amber-600 text-lg sm:text-xl font-Outfit font-bold">
+                        {(item?.discount || 0).toFixed(2)}{" "}
+                        <span className="text-sm font-normal">INR</span>
                       </p>
-                      {item?.discount !== item?.price && (
-                        <p className="text-gray-400 text-sm line-through">
-                          ${(item?.price || 0).toFixed(2)}
-                        </p>
-                      )}
+                      <p className="text-neutral-400 text-base sm:text-lg font-Outfit font-medium line-through">
+                        {(item?.price || 0).toFixed(2)}{" "}
+                        <span className="text-sm font-normal">INR</span>
+                      </p>
                     </div>
                     <motion.button
                       onClick={(e) => {

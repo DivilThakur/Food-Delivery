@@ -194,10 +194,10 @@ const Foods = () => {
                   </h1>
                   <div className="flex justify-around w-full group-hover:opacity-0 group-hover:scale-0 transition-all duration-500 items-center mt-3">
                     <h1 className="text-[#f29c52] text-sm sm:text-[16px] font-Outfit font-bold">
-                      ${(item?.discount || 0).toFixed(2)} USD
+                      ₹{(item?.discount || 0).toFixed(2)} INR
                     </h1>
                     <h1 className="text-neutral-500 text-xs sm:text-[14px] font-Outfit font-normal line-through">
-                      ${(item?.price || 0).toFixed(2)} USD
+                      ₹{(item?.price || 0).toFixed(2)} INR
                     </h1>
                   </div>
                   <button

@@ -188,13 +188,18 @@ const Orders = () => {
                         <span>
                           {item.quantity}x {item.name}
                         </span>
-                        <span>${item.price * item.quantity}</span>
+
+                        <p>
+                          {" "}
+                          <span className="text-sm font-normal">₹</span>
+                          {(item.price * item.quantity).toFixed(2)}
+                        </p>
                       </div>
                     ))}
                   </div>
                   <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600 flex justify-between font-semibold text-gray-800 dark:text-gray-100">
                     <span>Total:</span>
-                    <span>${order.amount.toFixed(2)}</span>
+                    <span>₹{order.amount.toFixed(2)}</span>
                   </div>
                 </div>
               </div>

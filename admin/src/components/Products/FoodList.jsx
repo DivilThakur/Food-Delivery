@@ -15,7 +15,9 @@ const FoodList = () => {
     const fetchFoods = async () => {
       if (!backendUrl) {
         console.error("Backend URL is not configured");
-        toast.error("Backend URL is not configured. Please check your environment variables.");
+        toast.error(
+          "Backend URL is not configured. Please check your environment variables."
+        );
         setIsLoading(false);
         return;
       }
@@ -25,17 +27,25 @@ const FoodList = () => {
         console.log("Fetching foods from:", backendUrl + "/api/food/get-food");
         const response = await axios.get(backendUrl + "/api/food/get-food");
         console.log("Server response:", response.data);
-        
+
         if (response.data.success) {
           console.log("Setting food list:", response.data.foods);
           setFoodList(response.data.foods || []);
         } else {
-          console.error("Server returned unsuccessful response:", response.data);
-          toast.error("Failed to fetch foods: " + (response.data.message || "Unknown error"));
+          console.error(
+            "Server returned unsuccessful response:",
+            response.data
+          );
+          toast.error(
+            "Failed to fetch foods: " +
+              (response.data.message || "Unknown error")
+          );
         }
       } catch (error) {
         console.error("Error fetching foods:", error);
-        toast.error("Failed to fetch foods: " + (error.message || "Unknown error"));
+        toast.error(
+          "Failed to fetch foods: " + (error.message || "Unknown error")
+        );
       } finally {
         setIsLoading(false);
       }
@@ -147,10 +157,12 @@ const FoodList = () => {
                   {food.discount ? (
                     <>
                       <span className="text-gray-500 dark:text-gray-400 line-through">
-                        ${food.price.toFixed(2)}
+                        {(food?.price || 0).toFixed(2)}{" "}
+                        <span className="text-sm font-normal">INR</span>
                       </span>
                       <span className="text-green-600 dark:text-green-400 font-bold">
-                        ${food.discount.toFixed(2)}
+                        {(food?.discount || 0).toFixed(2)}{" "}
+                        <span className="text-sm font-normal">INR</span>
                       </span>
                     </>
                   ) : (

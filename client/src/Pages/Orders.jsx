@@ -118,8 +118,9 @@ const Orders = () => {
                         </span>
                       ))}
                     </div>
-                    <p className="text-lg font-Outfit font-semibold text-amber-700 text-center md:text-right w-full md:w-auto">
-                      Amount: ${order?.amount?.toFixed(2) || "0.00"}
+                    <p className="text-amber-950 text-md sm:text-xl font-Outfit font-bold">
+                      <span className="text-sm font-normal">INR </span>
+                      {order?.amount?.toFixed(2) || 0}{" "}
                     </p>
                     <p className="text-lg font-Outfit font-medium text-gray-700 text-center md:text-right w-full md:w-auto">
                       Quantity: {order?.items?.length || 0}

@@ -16,7 +16,7 @@ const Hero = () => {
   },[])
 
   return (
-   <div className="" >
+   <div className="min-h-screen" >
     <Heading/>
     <Categories/>
     <Features/>

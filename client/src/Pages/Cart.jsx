@@ -150,8 +150,9 @@ const Cart = () => {
                           <h3 className="text-lg font-semibold text-amber-950">
                             {item.productId.name}
                           </h3>
-                          <p className="text-amber-600 font-bold text-md">
-                            ${item.productId.discount}
+                          <p className="text-amber-600 text-md sm:text-xl font-Outfit font-bold">
+                            {(item.productId.discount || 0).toFixed(2)}{" "}
+                            <span className="text-sm font-normal">INR</span>
                           </p>
                           <div className="flex items-center gap-2 mt-2">
                             <motion.button
@@ -201,8 +202,10 @@ const Cart = () => {
             <div className="border-t border-gray-200 p-4 space-y-4">
               <div className="flex justify-between items-center">
                 <p className="font-semibold text-gray-700 text-lg">Subtotal</p>
-                <p className="font-bold text-amber-950 text-xl">
-                  ${totalAmount.toFixed(2)}
+
+                <p className="text-amber-950 text-md sm:text-xl font-Outfit font-bold">
+                  {totalAmount.toFixed(2) || 0}{" "}
+                  <span className="text-sm font-normal">INR</span>
                 </p>
               </div>
               <motion.button

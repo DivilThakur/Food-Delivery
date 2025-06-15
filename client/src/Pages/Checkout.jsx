@@ -8,21 +8,11 @@ import { motion } from "framer-motion";
 
 const Checkout = () => {
   const navigate = useNavigate();
-  const {
-    totalAmount,
-    totalQuantity,
-    cartItems,
-    backendUrl,
-    token,
-    clearCart,
-    USD_TO_INR_RATE,
-  } = useContext(AppContext);
+  const { totalAmount, cartItems, backendUrl, token, clearCart } =
+    useContext(AppContext);
   const [loading, setLoading] = useState(false);
-  const deliveryFee = 4;
+  const deliveryFee = 29;
   const finalAmount = totalAmount + deliveryFee;
-
-  // Calculate original USD amount from finalAmount (INR)
-  const originalUsdAmount = (finalAmount / USD_TO_INR_RATE).toFixed(2);
 
   useEffect(() => {
     console.log(finalAmount);
@@ -70,8 +60,8 @@ const Checkout = () => {
           key: import.meta.env.VITE_RAZORPAY_KEY_ID,
           amount: finalAmount * 100,
           currency: "INR",
-          name: "SnackDash", // Your business name
-          description: `Total amount: $${originalUsdAmount}`,
+          name: "SnackDash",
+          description: "Order Payment",
           order_id: razorpayOrder.id,
           handler: async function (paymentResponse) {
             await verifyPayment(paymentResponse, response.data.orderData);
@@ -285,15 +275,24 @@ const Checkout = () => {
             <div className="space-y-4 text-lg text-gray-700">
               <div className="flex justify-between">
                 <p>Subtotal</p>
-                <p className="font-semibold">${totalAmount.toFixed(2)}</p>
+                <p className="text-amber-950 text-md sm:text-xl font-Outfit font-bold">
+                  {totalAmount.toFixed(2) || 0}{" "}
+                  <span className="text-sm font-normal">INR</span>
+                </p>
               </div>
               <div className="flex justify-between">
                 <p>Delivery Fee</p>
-                <p className="font-semibold">${deliveryFee.toFixed(2)}</p>
+                <p className="text-amber-950 text-md sm:text-xl font-Outfit font-bold">
+                  {deliveryFee.toFixed(2) || 0}{" "}
+                  <span className="text-sm font-normal">INR</span>
+                </p>
               </div>
               <div className="flex justify-between border-t border-gray-200 pt-4 text-xl font-bold text-amber-950">
                 <p>Total</p>
-                <p>${finalAmount.toFixed(2)}</p>
+                <p className="text-amber-950 text-md sm:text-xl font-Outfit font-bold">
+                  {finalAmount.toFixed(2) || 0}{" "}
+                  <span className="text-sm font-normal">INR</span>
+                </p>
               </div>
             </div>
           </div>
