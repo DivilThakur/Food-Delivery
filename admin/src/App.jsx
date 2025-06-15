@@ -42,7 +42,7 @@ const App = () => {
     <div
       className={`${
         darkMode ? "dark bg-gray-900 text-white" : "bg-white text-gray-900"
-      } min-h-screen`}
+      } min-h-screen w-full`}
     >
       {children}
     </div>

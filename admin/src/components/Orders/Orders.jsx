@@ -110,7 +110,7 @@ const Orders = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-lg p-2 sm:p-6 shadow-none sm:shadow-md">
+    <div className="bg-white dark:bg-gray-900 rounded-lg p-2 sm:p-6 shadow-none sm:shadow-md ">
       <Title>Orders</Title>
 
       {isLoading ? (

@@ -98,7 +98,7 @@ const AddProduct = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-md">
+    <div className="bg-white dark:bg-gray-800 w-1/2 rounded-lg p-6 shadow-md">
       <Title>Add New Food Item</Title>
 
       <form onSubmit={handleSubmit} className="mt-6 space-y-4">
