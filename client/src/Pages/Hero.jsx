@@ -9,24 +9,27 @@ import Products from '../components/Products'
 import Reservation from "../components/Reservation"
 import ScrollToTop from "../components/ScrollToTop"
 
+
 const Hero = () => {
 
-  useEffect(()=>{
-    window.scrollTo(0,0);
-  },[])
+
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
 
   return (
-   <div className="min-h-screen" >
-    <Heading/>
-    <Categories/>
-    <Features/>
-    <Products/>
-    <Discount/>
-    <FeaturedProducts/>
-    <NewsArticles/>
-    <Reservation/>
-    <ScrollToTop />
-   </div>
+    <div className="min-h-screen" >
+      <Heading />
+      <Categories />
+      <Features />
+      <Products />
+      <Discount />
+      <FeaturedProducts />
+      <NewsArticles />
+      <Reservation />
+      <ScrollToTop />
+    </div>
   )
 }
 

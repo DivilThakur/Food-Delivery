@@ -14,12 +14,17 @@ import SignInModal from "./components/Auth/SignInModal";
 import { ToastContainer } from "react-toastify";
 import { appContext } from "./context/appContext";
 import LoadingScreen from "./components/LoadingScreen";
+import { trackVisitor } from "./utils/trackVisitor";
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { showSignInModal, handleCloseSignInModal } = useContext(appContext);
   const [initialLoading, setInitialLoading] = useState(true);
+
+  useEffect(() => {
+    trackVisitor("admin");
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -37,12 +42,11 @@ const App = () => {
     setIsSidebarOpen((prev) => !prev);
   };
 
-  // Create a wrapper component for routes that need dark mode
+
   const DarkModeWrapper = ({ children }) => (
     <div
-      className={`${
-        darkMode ? "dark bg-gray-900 text-white" : "bg-white text-gray-900"
-      } min-h-screen w-full`}
+      className={`${darkMode ? "dark bg-gray-900 text-white" : "bg-white text-gray-900"
+        } min-h-screen w-full`}
     >
       {children}
     </div>
