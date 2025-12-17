@@ -136,6 +136,11 @@ MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
 RAZORPAY_KEY_ID=your_razorpay_key_id
 RAZORPAY_KEY_SECRET=your_razorpay_key_secret
+CLOUDINARY_API_KEY=**********
+CLOUDINARY_API_SECRET=*********
+CLOUDINARY_CLOUD_NAME=yourname
+UPSTASH_REDIS_REST_URL=https://******.upstash.io
+UPSTASH_REDIS_REST_TOKEN=AmqMAAIg_ajfsfnjefj
 
 
 # Client & Admin
