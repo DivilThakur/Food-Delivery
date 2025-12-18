@@ -15,6 +15,9 @@ import MobileMenu from "./Pages/MobileMenu";
 import Orders from "./Pages/Orders";
 import LoadingScreen from "./components/LoadingScreen";
 import { trackVisitor } from "./utils/trackVisitor"
+import { inject } from '@vercel/analytics';
+
+inject();
 
 const App = () => {
   const { cartOpen, showLogin, showMobileMenu } = useContext(AppContext);

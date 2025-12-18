@@ -15,6 +15,9 @@ import { ToastContainer } from "react-toastify";
 import { appContext } from "./context/appContext";
 import LoadingScreen from "./components/LoadingScreen";
 import { trackVisitor } from "./utils/trackVisitor";
+import { inject } from '@vercel/analytics';
+
+inject();
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
